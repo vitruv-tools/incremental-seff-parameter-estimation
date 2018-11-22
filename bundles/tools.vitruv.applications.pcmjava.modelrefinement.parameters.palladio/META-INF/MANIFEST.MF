@@ -160,7 +160,6 @@ Require-Bundle: tools.vitruv.applications.pcmjava.modelrefinement.parameters.mon
  org.eclipse.equinox.preferences.source;bundle-version="3.7.0",
  org.eclipse.equinox.registry.source;bundle-version="3.7.0",
  org.eclipse.equinox.security;bundle-version="1.2.300",
- org.eclipse.equinox.security.macosx.source;bundle-version="1.100.200",
  org.eclipse.equinox.security.source;bundle-version="1.2.300",
  org.eclipse.equinox.security.ui;bundle-version="1.1.400",
  org.eclipse.equinox.security.ui.source;bundle-version="1.1.400",
