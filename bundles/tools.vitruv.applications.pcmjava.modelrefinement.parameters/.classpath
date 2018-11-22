@@ -1,44 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="target/dependency/arpack_combined_all.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/bounce.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/colt.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/commons-math3.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/concurrent.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/core.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/jackson-annotations.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/jackson-core.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/jackson-databind.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/java-cup-11b-runtime.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/java-cup-11b.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/jniloader.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/mtj.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/native_ref-java.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/native_system-java.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/netlib-java.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/netlib-native_ref-linux-armhf-natives.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/netlib-native_ref-linux-i686-natives.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/netlib-native_ref-linux-x86_64-natives.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/netlib-native_ref-osx-x86_64-natives.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/netlib-native_ref-win-i686-natives.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/netlib-native_ref-win-x86_64-natives.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/netlib-native_system-linux-armhf-natives.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/netlib-native_system-linux-i686-natives.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/netlib-native_system-linux-x86_64-natives.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/netlib-native_system-osx-x86_64-natives.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/netlib-native_system-win-i686-natives.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/netlib-native_system-win-x86_64-natives.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/tools.descartes.librede.bayesplusplus.java.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/tools.descartes.librede.connector.dml.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/tools.descartes.librede.estimation.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/tools.descartes.librede.ipopt.java.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/tools.descartes.librede.linalg.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/tools.descartes.librede.model.edit.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/tools.descartes.librede.model.editor.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/tools.descartes.librede.model.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/tools.descartes.librede.nativehelper.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/tools.descartes.librede.nnls.java.jar"/>
-	<classpathentry exported="true" kind="lib" path="target/dependency/weka-stable.jar"/>
 	<classpathentry exported="true" kind="lib" path="target/classes/" sourcepath="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
 		<attributes>
