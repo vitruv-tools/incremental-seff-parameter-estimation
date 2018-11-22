@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Usagemodel
+Bundle-SymbolicName: tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.palladiosimulator.pcm;bundle-version="4.1.0",
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters;bundle-version="1.0.0",
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring;bundle-version="1.0.0",
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring.adapter;bundle-version="1.0.0",
+ org.apache.commons.lang3;bundle-version="3.1.0"
+Import-Package: org.eclipse.debug.core,
+ org.eclipse.debug.ui

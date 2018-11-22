@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ASCII"?>
+<correspondence:CorrespondenceModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:correspondence="https://www.iobserve-devops.net/model/0.0.3/correspondence" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.2">
+  <parts>
+    <modelType href="./test-data/simple2/default.repository#_dye38MjOEeiWRYm1yDC5rQ"/>
+    <entries xsi:type="correspondence:ComponentEntry" implementationId="0">
+      <component xsi:type="repository:BasicComponent" href="./test-data/simple2/default.repository#_7knRQNCgEeiG9v0ZHxeEbQ"/>
+    </entries>
+    <entries xsi:type="correspondence:OperationEntry" implementationId="0">
+      <operation href="./test-data/simple2/default.repository#_E6eAEMjPEeiWRYm1yDC5rQ"/>
+    </entries>
+  </parts>
+</correspondence:CorrespondenceModel>

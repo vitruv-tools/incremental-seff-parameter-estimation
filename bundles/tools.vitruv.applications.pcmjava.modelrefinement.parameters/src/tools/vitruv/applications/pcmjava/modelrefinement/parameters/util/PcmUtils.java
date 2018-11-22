@@ -12,10 +12,13 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.palladiosimulator.pcm.PcmPackage;
+import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.repository.Repository;
+import org.palladiosimulator.pcm.usagemodel.UsageModel;
 
 /**
  * PCM specific utility functions.
@@ -70,6 +73,32 @@ public class PcmUtils {
         Resource resource = resourceSet.getResource(filePathUri, true);
         return (Repository) resource.getContents().get(0);
     }
+    
+    public static UsageModel loadUsageModel(final String filePath) {
+		PcmPackage.eINSTANCE.eClass();
+
+		ResourceSet resourceSet = new ResourceSetImpl();
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
+				.put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+
+		URI filePathUri = org.eclipse.emf.common.util.URI.createFileURI(filePath);
+
+		Resource resource = resourceSet.getResource(filePathUri, true);
+		return (UsageModel) resource.getContents().get(0);
+	}
+
+	public static Allocation loadAllocationModel(final String filePath) {
+		PcmPackage.eINSTANCE.eClass();
+
+		ResourceSet resourceSet = new ResourceSetImpl();
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
+				.put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+
+		URI filePathUri = org.eclipse.emf.common.util.URI.createFileURI(filePath);
+
+		Resource resource = resourceSet.getResource(filePathUri, true);
+		return (Allocation) resource.getContents().get(0);
+	}
 
     /**
      * Saves the repository into a file.

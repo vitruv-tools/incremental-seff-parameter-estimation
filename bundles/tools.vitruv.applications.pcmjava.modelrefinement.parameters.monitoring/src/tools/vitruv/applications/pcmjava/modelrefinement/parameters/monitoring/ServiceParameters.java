@@ -1,5 +1,7 @@
 package tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring;
 
+import kieker.common.record.IMonitoringRecord;
+
 /**
  * Service parameter serialization.
  *
