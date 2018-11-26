@@ -7,7 +7,8 @@ tmp/
 *.swp
 *.class
 
-.DS_STORE
+# Mac OS
+.DS_Store
 
 # Xtend
 xtend-gen/
