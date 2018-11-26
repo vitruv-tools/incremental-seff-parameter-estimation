@@ -80,6 +80,7 @@ public final class KiekerResourceUtilizationFilter extends AbstractFilterPlugin 
 
     @Override
     public double timeToSeconds(final long time) {
-        return time / 1.0e9;
+        double value = time / 1.0e9;
+        return value;
     }
 }

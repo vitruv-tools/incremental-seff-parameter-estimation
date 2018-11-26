@@ -1,6 +1,8 @@
 package evaluation.casestudy;
 
-import evaluation.Action;
+import java.io.File;
+
+import evaluation.dependencies.Action;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring.ThreadMonitoringController;
 
 public class Common {
@@ -10,22 +12,50 @@ public class Common {
     public static final int ComputationConst2 = 10;
     
     public static String DataRootPath = "./test-data/casestudy/";
-
-    public Mode logMode;
-
-    public Mode runMode;
     
-    public static String getSessionId(Mode mode, Mode runMode) {
-        return "session-log-" + mode + "-run-" + runMode;
+    public static String ResultsPath = DataRootPath + "results-data-2/";
+    
+    public final Mode logMode;
+
+    public final Mode runMode;
+    
+    public final String name;
+    
+    public Common(Mode mode, Mode runMode, String name) {
+        this.logMode = mode;
+        this.runMode = runMode;
+        this.name = name;
+    }
+    
+    public String getResponseTimeResultPath() {
+        String path = ResultsPath + this.name + "/" + getFileSessionId() + "/response-time/";
+        createDirectory(path);
+        return path;
+    }
+    
+    public String getUtilizationResultPath() {
+        String path = ResultsPath + this.name + "/" + getFileSessionId() + "/utilization/";
+        createDirectory(path);
+        return path;
+    }
+    
+    public String getSimulatedResponseTimeResultPath() {
+        String path = ResultsPath + this.name + "/" + getFileSessionId() + "/simulated-response-time/";
+        createDirectory(path);
+        return path;
+    }
+    
+    public String getFileSessionId() {
+        return "session-log-" + logMode + "-run-" + runMode;
     }
     
     public String getSessionId() {
-        return "session-log-" + logMode + "-run-" + runMode;
+        return "session-" + this.name + "-log-" + logMode + "-run-" + runMode;
     }
-
-    public Common(Mode mode, Mode runMode) {
-        this.logMode = mode;
-        this.runMode = runMode;
+    
+    public void createDirectory(String dirPath) {
+        File file = new File(dirPath);
+        file.getParentFile().mkdirs();
     }
     
     public static void computation(final int param) {

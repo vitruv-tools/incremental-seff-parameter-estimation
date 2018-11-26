@@ -16,7 +16,7 @@
       </actions_ScenarioBehaviour>
     </scenarioBehaviour_UsageScenario>
     <workload_UsageScenario xsi:type="usagemodel:ClosedWorkload" population="10">
-      <thinkTime_ClosedWorkload specification="0.005"/>
+      <thinkTime_ClosedWorkload specification="0.5"/>
     </workload_UsageScenario>
   </usageScenario_UsageModel>
 </usagemodel:UsageModel>

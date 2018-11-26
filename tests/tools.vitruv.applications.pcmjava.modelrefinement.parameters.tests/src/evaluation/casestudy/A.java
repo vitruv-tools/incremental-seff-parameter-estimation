@@ -1,6 +1,6 @@
 package evaluation.casestudy;
 
-import evaluation.Action;
+import evaluation.dependencies.Action;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring.ServiceParameters;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring.ThreadMonitoringController;
 
