@@ -5,7 +5,13 @@ import java.io.IOException;
 import java.lang.ProcessBuilder.Redirect;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+
+import javax.measure.Measure;
+import javax.measure.quantity.Duration;
+import javax.measure.unit.SI;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -16,18 +22,26 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.palladiosimulator.edp2.dao.BinaryMeasurementsDao;
+import org.palladiosimulator.edp2.dao.MeasurementsDaoFactory;
+import org.palladiosimulator.edp2.dao.exception.DataNotAccessibleException;
+import org.palladiosimulator.edp2.models.ExperimentData.DataSeries;
+import org.palladiosimulator.edp2.models.ExperimentData.DoubleBinaryMeasurements;
 import org.palladiosimulator.edp2.models.ExperimentData.ExperimentGroup;
-import org.palladiosimulator.edp2.models.ExperimentData.ExperimentRun;
-import org.palladiosimulator.edp2.models.ExperimentData.ExperimentSetting;
+import org.palladiosimulator.edp2.models.ExperimentData.LongBinaryMeasurements;
 import org.palladiosimulator.edp2.models.ExperimentData.Measurement;
 import org.palladiosimulator.edp2.models.ExperimentData.MeasurementRange;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointPackage;
+import org.palladiosimulator.edp2.repository.local.dao.LocalDirectoryMeasurementsDaoFactory;
 import org.palladiosimulator.experimentautomation.abstractsimulation.AbstractsimulationFactory;
 import org.palladiosimulator.experimentautomation.abstractsimulation.FileDatasource;
 import org.palladiosimulator.experimentautomation.application.tooladapter.simucom.model.SimuComConfiguration;
 import org.palladiosimulator.experimentautomation.application.tooladapter.simulizar.model.SimuLizarConfiguration;
 import org.palladiosimulator.experimentautomation.experiments.ExperimentRepository;
 import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointPackage;
+
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio.results.PalladioAnalysisResults;
 
 public class HeadlessExecutor {
 	private static final String[] STATIC_ARGS = new String[] { "-XstartOnFirstThread",
@@ -50,7 +64,10 @@ public class HeadlessExecutor {
 		this.eclipsePath = eclipsePath;
 	}
 
-	public void run(ExperimentRepository repository) throws IOException {
+	public PalladioAnalysisResults run(ExperimentRepository repository) throws IOException {
+		// init results
+		PalladioAnalysisResults results = null;
+
 		// create experiment result folder
 		Path directory = Files.createTempDirectory("result");
 		modifyDatasources(repository, directory);
@@ -65,31 +82,90 @@ public class HeadlessExecutor {
 		// execute command
 		if (executeCommandBlocking(fullCommand)) {
 			// parse results
-			parseResults(directory);
+			results = parseResults(directory);
 		}
 
 		// finally delete temp files
 		temp.delete();
 		FileUtils.deleteDirectory(directory.toFile());
+
+		// return the results of the analysis
+		return results;
 	}
 
-	private void parseResults(Path directory) {
+	private PalladioAnalysisResults parseResults(Path directory) {
+		PalladioAnalysisResults results = new PalladioAnalysisResults();
+
 		MeasuringpointPackage.eINSTANCE.eClass();
 		PcmmeasuringpointPackage.eINSTANCE.eClass();
 
 		File[] dict = directory.toFile().listFiles(file -> FilenameUtils.getExtension(file.getName()).equals("edp2"));
 		if (dict.length == 1) {
+			boolean repoOpened = true;
+
 			ExperimentGroup group = readFromFile(dict[0].getAbsolutePath(), ExperimentGroup.class);
-			// TODO do something with the data
-			ExperimentSetting setting = group.getExperimentSettings().get(0);
-			for (ExperimentRun run : setting.getExperimentRuns()) {
-				for (Measurement msm : run.getMeasurement()) {
-					for (MeasurementRange range : msm.getMeasurementRanges()) {
-						// TODO
+			if (repoOpened) {
+				loadMeasurements(group.getExperimentSettings().get(0).getExperimentRuns().get(0).getMeasurement(),
+						results, trimURI(directory));
+			}
+		}
+
+		return results;
+	}
+
+	private void loadMeasurements(List<Measurement> measurements, PalladioAnalysisResults result, URI directoryURI) {
+		MeasurementsDaoFactory fact = LocalDirectoryMeasurementsDaoFactory.getRegisteredFactory(directoryURI);
+		if (fact == null) {
+			fact = new LocalDirectoryMeasurementsDaoFactory(directoryURI);
+		}
+
+		for (Measurement measurement : measurements) {
+			MeasuringPoint belongingPoint = measurement.getMeasuringType().getMeasuringPoint();
+
+			for (MeasurementRange range : measurement.getMeasurementRanges()) {
+				for (DataSeries series : range.getRawMeasurements().getDataSeries()) {
+					if (series instanceof LongBinaryMeasurements) {
+						result.addLongs(belongingPoint, getLongMeasures(fact, series.getValuesUuid()));
+					} else if (series instanceof DoubleBinaryMeasurements) {
+						result.addDoubles(belongingPoint, getDoubleMeasures(fact, series.getValuesUuid()));
 					}
 				}
 			}
 		}
+	}
+
+	private List<Measure<Double, Duration>> getDoubleMeasures(MeasurementsDaoFactory fact, String uuid) {
+		BinaryMeasurementsDao<Double, Duration> dao = fact.createDoubleMeasurementsDao(uuid, SI.SECOND);
+		List<Measure<Double, Duration>> ret = null;
+		try {
+			dao.open();
+			ret = new ArrayList<>(dao.getMeasurements());
+			dao.close();
+		} catch (DataNotAccessibleException e) {
+			// TODO log maybe
+		}
+		return ret;
+	}
+
+	private List<Measure<Long, Duration>> getLongMeasures(MeasurementsDaoFactory fact, String uuid) {
+		BinaryMeasurementsDao<Long, Duration> dao = fact.createLongMeasurementsDao(uuid, SI.SECOND);
+		List<Measure<Long, Duration>> ret = null;
+		try {
+			dao.open();
+			ret = new ArrayList<>(dao.getMeasurements());
+			dao.close();
+		} catch (DataNotAccessibleException e) {
+			// TODO log maybe
+		}
+		return ret;
+	}
+
+	private URI trimURI(Path dict) {
+		URI directoryURI = URI.createURI(dict.toUri().toString());
+		if (directoryURI.hasTrailingPathSeparator()) {
+			return directoryURI.trimSegments(1);
+		}
+		return directoryURI;
 	}
 
 	private void modifyDatasources(ExperimentRepository repository, Path directory) {

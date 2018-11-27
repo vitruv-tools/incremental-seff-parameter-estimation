@@ -1,12 +1,17 @@
 package tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio.test;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Map;
+
+import javax.measure.unit.SI;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.experimentautomation.application.tooladapter.simucom.model.SimucomtooladapterPackage;
 import org.palladiosimulator.experimentautomation.application.tooladapter.simulizar.model.SimulizartooladapterPackage;
 import org.palladiosimulator.experimentautomation.experiments.ExperimentRepository;
@@ -14,6 +19,8 @@ import org.palladiosimulator.experimentautomation.experiments.ExperimentsPackage
 
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio.ExperimentBuilder;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio.HeadlessExecutor;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio.results.MeasuringPointResults;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio.results.PalladioAnalysisResults;
 
 public class Test {
 	// TODO exchange this with certain machine settings
@@ -33,8 +40,13 @@ public class Test {
 
 	@org.junit.Test
 	public void test() throws IOException {
-		String expPath = "/Users/david/git/incremental-seff-parameter-estimation/bundles/tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio/model/Experiments/Capacity.experiments";
-		executor.run(loadRepo(expPath));
+		String expPath = new File("model/Experiments/Capacity.experiments").getAbsolutePath();
+		PalladioAnalysisResults res = executor.run(loadRepo(expPath));
+
+		for (Map.Entry<MeasuringPoint, MeasuringPointResults> ent : res.entries()) {
+			System.out.println(ent.getKey().getStringRepresentation() + " = " + ent.getValue().getYValues().stream()
+					.mapToDouble(m -> m.doubleValue(SI.SECOND)).average().orElse(0));
+		}
 	}
 
 	@org.junit.Test
@@ -44,7 +56,11 @@ public class Test {
 				.repository(CocomeExample.repo).system(CocomeExample.sys).env(CocomeExample.env)
 				.slos(CocomeExample.slo_repo).finish().build();
 
-		executor.run(exec);
+		PalladioAnalysisResults res = executor.run(exec);
+		for (Map.Entry<MeasuringPoint, MeasuringPointResults> ent : res.entries()) {
+			System.out.println(ent.getKey().getStringRepresentation() + " = " + ent.getValue().getYValues().stream()
+					.mapToDouble(m -> m.doubleValue(SI.SECOND)).average().orElse(0));
+		}
 	}
 
 	private ExperimentRepository loadRepo(String path) {
