@@ -16,5 +16,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring"/>
 	<classpathentry kind="lib" path="lib/ant-1.10.5.jar"/>
 	<classpathentry kind="lib" path="lib/commons-io-2.6.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.8.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
