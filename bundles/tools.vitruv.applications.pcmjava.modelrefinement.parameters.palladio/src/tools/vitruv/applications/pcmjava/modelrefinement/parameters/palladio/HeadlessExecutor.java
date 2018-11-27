@@ -48,13 +48,14 @@ public class HeadlessExecutor {
 			"-Declipse.p2.data.area=@config.dir/p2", "-Declipse.pde.launch=true", "-Dfile.encoding=UTF-8" };
 
 	// very static maybe exchange this with dynamic search of equinox
-	private static final String EQUINOX_OFFSET = "plugins/org.eclipse.equinox.launcher_1.4.0.v20161219-1356.jar";
+	private static final String EQUINOX_OFFSET = "plugins" + File.separator + "org.eclipse.equinox.launcher_1.4.0.v20161219-1356.jar";
 	private static final String EQUINOX_MAIN = "org.eclipse.equinox.launcher.Main";
 	private static final String PCM_APPLICATION = "org.palladiosimulator.experimentautomation.application";
 
 	// OS DEPENDENT STRING -> BUILD THIS AUTOMATICALLY (windows: -os win32 -ws win32
 	// -arch x86_64 ..
-	private static final String ECL_APP_STATIC = "-os macosx -ws cocoa -arch x86_64 -nl de_DE -consoleLog -clean ";
+	//private static final String ECL_APP_STATIC = "-os macosx -ws cocoa -arch x86_64 -nl de_DE -consoleLog -clean ";
+	private static final String ECL_APP_STATIC = "-os win32 -ws win32 -arch x86_64 -nl de_DE -consoleLog -clean ";
 
 	private String javaPath;
 	private String eclipsePath;
