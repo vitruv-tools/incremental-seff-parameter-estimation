@@ -56,8 +56,8 @@ public class HeadlessExecutor {
 
 	// OS DEPENDENT STRING -> BUILD THIS AUTOMATICALLY (windows: -os win32 -ws win32
 	// -arch x86_64 ..
-	private static final String ECL_APP_STATIC_WINDOWS = "-os macosx -ws cocoa -arch x86_64 -nl de_DE -consoleLog -clean ";
-	private static final String ECL_APP_STATIC_MACOS = "-os win32 -ws win32 -arch x86_64 -nl de_DE -consoleLog -clean ";
+	private static final String ECL_APP_STATIC_MACOS = "-os macosx -ws cocoa -arch x86_64 -nl de_DE -consoleLog -clean ";
+	private static final String ECL_APP_STATIC_WINDOWS = "-os win32 -ws win32 -arch x86_64 -nl de_DE -consoleLog -clean ";
 
 	private String javaPath;
 	private String eclipsePath;
