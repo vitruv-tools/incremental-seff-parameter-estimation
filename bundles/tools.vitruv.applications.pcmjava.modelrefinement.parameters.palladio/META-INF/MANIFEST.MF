@@ -240,7 +240,15 @@ Require-Bundle: tools.vitruv.applications.pcmjava.modelrefinement.parameters.mon
  org.palladiosimulator.pcm.edp2.measuringpoint.edit;bundle-version="2.1.1",
  org.palladiosimulator.pcm.edp2.measuringpoint.edit.source;bundle-version="2.1.1",
  org.palladiosimulator.pcm.edp2.measuringpoint.source;bundle-version="1.0.0",
- tools.vitruv.applications.pcmjava.modelrefinement.parameters;bundle-version="1.0.0"
-Import-Package: org.palladiosimulator.experimentautomation.application.config
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters;bundle-version="1.0.0",
+ org.palladiosimulator.edp2,
+ org.palladiosimulator.edp2.repository.local,
+ org.palladiosimulator.commons;bundle-version="1.0.1",
+ org.palladiosimulator.commons.source;bundle-version="1.0.1"
+Import-Package: org.palladiosimulator.edp2.local,
+ org.palladiosimulator.edp2.repository.local,
+ org.palladiosimulator.edp2.repository.local.dao,
+ org.palladiosimulator.edp2.util,
+ org.palladiosimulator.experimentautomation.application.config
 Export-Package: tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio,
  tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio.test
