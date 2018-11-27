@@ -15,6 +15,7 @@ import javax.measure.unit.SI;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.tools.ant.types.Commandline;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -44,25 +45,33 @@ import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointPackage;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio.results.PalladioAnalysisResults;
 
 public class HeadlessExecutor {
-	private static final String[] STATIC_ARGS = new String[] { "-XstartOnFirstThread",
+	private static final String[] STATIC_ARGS = new String[] { SystemUtils.IS_OS_MAC ? "-XstartOnFirstThread" : "",
 			"-Declipse.p2.data.area=@config.dir/p2", "-Declipse.pde.launch=true", "-Dfile.encoding=UTF-8" };
 
 	// very static maybe exchange this with dynamic search of equinox
-	private static final String EQUINOX_OFFSET = "plugins" + File.separator + "org.eclipse.equinox.launcher_1.4.0.v20161219-1356.jar";
+	private static final String EQUINOX_OFFSET = "plugins" + File.separator
+			+ "org.eclipse.equinox.launcher_1.4.0.v20161219-1356.jar";
 	private static final String EQUINOX_MAIN = "org.eclipse.equinox.launcher.Main";
 	private static final String PCM_APPLICATION = "org.palladiosimulator.experimentautomation.application";
 
 	// OS DEPENDENT STRING -> BUILD THIS AUTOMATICALLY (windows: -os win32 -ws win32
 	// -arch x86_64 ..
-	//private static final String ECL_APP_STATIC = "-os macosx -ws cocoa -arch x86_64 -nl de_DE -consoleLog -clean ";
-	private static final String ECL_APP_STATIC = "-os win32 -ws win32 -arch x86_64 -nl de_DE -consoleLog -clean ";
+	private static final String ECL_APP_STATIC_WINDOWS = "-os macosx -ws cocoa -arch x86_64 -nl de_DE -consoleLog -clean ";
+	private static final String ECL_APP_STATIC_MACOS = "-os win32 -ws win32 -arch x86_64 -nl de_DE -consoleLog -clean ";
 
 	private String javaPath;
 	private String eclipsePath;
+	private String eclAppStatic;
 
 	public HeadlessExecutor(String javaPath, String eclipsePath) {
 		this.javaPath = javaPath;
 		this.eclipsePath = eclipsePath;
+
+		if (SystemUtils.IS_OS_WINDOWS) {
+			this.eclAppStatic = ECL_APP_STATIC_WINDOWS;
+		} else {
+			this.eclAppStatic = ECL_APP_STATIC_MACOS;
+		}
 	}
 
 	public PalladioAnalysisResults run(ExperimentRepository repository) throws IOException {
@@ -191,7 +200,7 @@ public class HeadlessExecutor {
 		String commandEclipse = "-classpath \"" + eclipsePath + EQUINOX_OFFSET + "\" " + EQUINOX_MAIN;
 		commandEclipse += " -application " + PCM_APPLICATION;
 
-		String commandExperiments = ECL_APP_STATIC + expFile.getAbsolutePath();
+		String commandExperiments = eclAppStatic + expFile.getAbsolutePath();
 
 		// full command
 		return commandJava + " " + commandEclipse + " " + commandExperiments;
