@@ -244,7 +244,13 @@ Require-Bundle: tools.vitruv.applications.pcmjava.modelrefinement.parameters.mon
  org.palladiosimulator.edp2,
  org.palladiosimulator.edp2.repository.local,
  org.palladiosimulator.commons;bundle-version="1.0.1",
- org.palladiosimulator.commons.source;bundle-version="1.0.1"
+ org.palladiosimulator.commons.source;bundle-version="1.0.1",
+ org.palladiosimulator.metricspec.edit.source;bundle-version="1.0.3",
+ org.palladiosimulator.metricspec.editor;bundle-version="1.0.3",
+ org.palladiosimulator.metricspec.editor.source;bundle-version="1.0.3",
+ org.palladiosimulator.metricspec.resources;bundle-version="1.0.3",
+ org.palladiosimulator.metricspec.resources.source;bundle-version="1.0.3",
+ org.palladiosimulator.metricspec.source;bundle-version="1.0.3"
 Import-Package: org.palladiosimulator.edp2.local,
  org.palladiosimulator.edp2.repository.local,
  org.palladiosimulator.edp2.repository.local.dao,

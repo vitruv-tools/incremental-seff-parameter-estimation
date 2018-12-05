@@ -25,7 +25,9 @@ public class Main {
 
         ThreadMonitoringController.setSessionId("session-1");
 
-        for (int x = 0; x < 50; x++) {
+        long before = System.currentTimeMillis();
+        ThreadMonitoringController.getInstance().resetOverhead();
+        for (int x = 0; x < 10; x++) {
             B b = new B();
             A a = new A(b);
 
@@ -35,6 +37,8 @@ public class Main {
 
             System.out.println("Next application run finished.");
         }
+        System.out.println(ThreadMonitoringController.getInstance().getOverhead() + "ms");
+        System.out.println((System.currentTimeMillis() - before) + "ms");
 
         System.out.println("Finished session-1.");
 

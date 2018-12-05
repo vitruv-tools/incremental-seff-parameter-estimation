@@ -47,6 +47,8 @@ public class ThreadMonitoringController {
 
     private ServiceMonitoringController currentServiceController;
 
+    private long overhead;
+
     private ThreadMonitoringController(final long threadId, final int initialServiceDepthCount) {
         this.threadId = threadId;
         this.serviceControllers = new ArrayList<>(initialServiceDepthCount);
@@ -55,6 +57,7 @@ public class ThreadMonitoringController {
         }
         this.currentServiceIndex = -1;
         this.currentServiceController = null;
+        this.overhead = 0;
     }
 
     /**
@@ -66,7 +69,9 @@ public class ThreadMonitoringController {
      *            The SEFF Id for the service.
      */
     public void enterService(final String serviceId) {
+        long before = System.currentTimeMillis();
         this.enterService(serviceId, ServiceParameters.EMPTY);
+        overhead += System.currentTimeMillis() - before;
     }
 
     /**
@@ -80,6 +85,7 @@ public class ThreadMonitoringController {
      *            The service parameter values.
      */
     public void enterService(final String serviceId, final ServiceParameters serviceParameters) {
+        long before = System.currentTimeMillis();
         String currentServiceExecutionId = null;
         String currentCallerId = null;
         if (this.currentServiceController != null) {
@@ -100,6 +106,7 @@ public class ThreadMonitoringController {
                 currentServiceExecutionId);
 
         this.currentServiceController = newService;
+        overhead += System.currentTimeMillis() - before;
     }
 
     /**
@@ -107,6 +114,7 @@ public class ThreadMonitoringController {
      * {@link ThreadMonitoringController#enterService(String)} must be called first.
      */
     public void exitService() {
+        long before = System.currentTimeMillis();
         this.currentServiceController.exitService();
         this.currentServiceIndex -= 1;
         if (this.currentServiceIndex >= 0) {
@@ -114,6 +122,7 @@ public class ThreadMonitoringController {
         } else {
             this.currentServiceController = null;
         }
+        overhead += System.currentTimeMillis() - before;
     }
 
     /**
@@ -135,7 +144,9 @@ public class ThreadMonitoringController {
      *            The abstract action id of the executed branch transition.
      */
     public void logBranchExecution(final String branchId, final String executedBranchId) {
+        long before = System.currentTimeMillis();
         this.currentServiceController.logBranchExecution(branchId, executedBranchId);
+        overhead += System.currentTimeMillis() - before;
     }
 
     /**
@@ -147,7 +158,9 @@ public class ThreadMonitoringController {
      *            The executed iterations of the loop.
      */
     public void logLoopIterationCount(final String loopId, final long loopIterationCount) {
+        long before = System.currentTimeMillis();
         this.currentServiceController.logLoopIterationCount(loopId, loopIterationCount);
+        overhead += System.currentTimeMillis() - before;
     }
 
     /**
@@ -161,7 +174,9 @@ public class ThreadMonitoringController {
      *            The start time of the response time.
      */
     public void logResponseTime(final String internalActionId, final String resourceId, final long startTime) {
+        long before = System.currentTimeMillis();
         this.currentServiceController.logResponseTime(internalActionId, resourceId, startTime);
+        overhead += System.currentTimeMillis() - before;
     }
 
     /**
@@ -171,7 +186,13 @@ public class ThreadMonitoringController {
      *            The abstract action id of the next external call.
      */
     public void setCurrentCallerId(final String currentCallerId) {
+        long before = System.currentTimeMillis();
         this.currentServiceController.setCurrentCallerId(currentCallerId);
+        overhead += System.currentTimeMillis() - before;
+    }
+
+    public long getOverhead() {
+        return overhead;
     }
 
     /**
@@ -292,5 +313,10 @@ public class ThreadMonitoringController {
         public void setCurrentCallerId(final String currentCallerId) {
             this.currentCallerId = currentCallerId;
         }
+    }
+
+    public void resetOverhead() {
+        System.out.println("Reset");
+        this.overhead = 0;
     }
 }

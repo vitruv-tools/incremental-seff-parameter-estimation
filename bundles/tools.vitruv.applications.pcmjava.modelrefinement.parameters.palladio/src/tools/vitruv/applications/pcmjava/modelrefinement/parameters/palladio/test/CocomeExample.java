@@ -11,15 +11,14 @@ import org.palladiosimulator.servicelevelobjective.ServiceLevelObjectiveReposito
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.PcmUtils;
 
 public class CocomeExample {
-	public static UsageModel usage = PcmUtils
-			.loadUsageModel(new File("cocome_pcm/cocome.usagemodel").getAbsolutePath());
+	public static UsageModel usage = PcmUtils.loadUsageModel(new File("cocome/cocome.usagemodel").getAbsolutePath());
 	public static Allocation allocation = PcmUtils
-			.loadAllocationModel(new File("cocome_pcm/cocome.allocation").getAbsolutePath());
-	public static Repository repo = PcmUtils.loadModel(new File("cocome_pcm/cocome.repository").getAbsolutePath());
+			.loadAllocationModel(new File("cocome/cocome.allocation").getAbsolutePath());
+	public static Repository repo = PcmUtils.loadModel(new File("cocome/cocome.repository").getAbsolutePath());
 	public static org.palladiosimulator.pcm.system.System sys = PcmUtils.readFromFile(
-			new File("cocome_pcm/cocome.system").getAbsolutePath(), org.palladiosimulator.pcm.system.System.class);
-	public static ResourceEnvironment env = PcmUtils.readFromFile(
-			new File("cocome_pcm/cocome.resourceenvironment").getAbsolutePath(), ResourceEnvironment.class);
+			new File("cocome/cocome.system").getAbsolutePath(), org.palladiosimulator.pcm.system.System.class);
+	public static ResourceEnvironment env = PcmUtils
+			.readFromFile(new File("cocome/cocome.resourceenvironment").getAbsolutePath(), ResourceEnvironment.class);
 	public static ServiceLevelObjectiveRepository slo_repo = PcmUtils
-			.readFromFile(new File("cocome_pcm/cocome.slo").getAbsolutePath(), ServiceLevelObjectiveRepository.class);
+			.readFromFile(new File("cocome/cocome.slo").getAbsolutePath(), ServiceLevelObjectiveRepository.class);
 }
