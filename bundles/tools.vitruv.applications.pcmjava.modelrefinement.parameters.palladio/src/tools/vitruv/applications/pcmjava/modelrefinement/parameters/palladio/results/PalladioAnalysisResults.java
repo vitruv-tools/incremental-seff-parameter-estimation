@@ -10,6 +10,7 @@ import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.metricspec.MetricDescription;
 
 public class PalladioAnalysisResults {
 	private Map<MeasuringPoint, MeasuringPointResults> results;
@@ -22,13 +23,13 @@ public class PalladioAnalysisResults {
 		return results.entrySet();
 	}
 
-	public void addLongs(MeasuringPoint p, List<Measure<Long, Duration>> longs) {
-		init(p);
+	public void addLongs(MeasuringPoint p, List<Measure<Long, Duration>> longs, MetricDescription metric) {
+		init(p, metric);
 		this.results.get(p).applyLongValues(longs);
 	}
 
-	public void addDoubles(MeasuringPoint p, List<Measure<Double, Duration>> doubles) {
-		init(p);
+	public void addDoubles(MeasuringPoint p, List<Measure<Double, Duration>> doubles, MetricDescription metric) {
+		init(p, metric);
 		this.results.get(p).applyDoubleValues(doubles);
 	}
 
@@ -36,9 +37,9 @@ public class PalladioAnalysisResults {
 		return results;
 	}
 
-	private void init(MeasuringPoint p) {
+	private void init(MeasuringPoint p, MetricDescription metric) {
 		if (!this.results.containsKey(p)) {
-			this.results.put(p, new MeasuringPointResults());
+			this.results.put(p, new MeasuringPointResults(metric));
 		}
 	}
 

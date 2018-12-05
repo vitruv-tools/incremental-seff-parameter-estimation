@@ -25,7 +25,7 @@ import tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio.res
 public class Test {
 	// TODO exchange this with certain machine settings
 	private static final String java = "/Library/Java/JavaVirtualMachines/jdk1.8.0_171.jdk/Contents/Home/bin/java";
-	private static final String eclipse = "";
+	private static final String eclipse = "/Users/david/Desktop/Studium/WS1819/Praktikum IngSoftware/Setup Automation/Eclipse.app/Contents/Eclipse/";
 
 	private static HeadlessExecutor executor;
 
@@ -38,7 +38,7 @@ public class Test {
 		executor = new HeadlessExecutor(java, eclipse);
 	}
 
-	@org.junit.Test
+	// @org.junit.Test
 	public void test() throws IOException {
 		String expPath = new File("model/Experiments/Capacity.experiments").getAbsolutePath();
 		PalladioAnalysisResults res = executor.run(loadRepo(expPath));
@@ -51,15 +51,20 @@ public class Test {
 
 	@org.junit.Test
 	public void test2() throws IOException {
-		ExperimentRepository exec = ExperimentBuilder.create().experiment().desc("Cocome Execution").measurements(1)
-				.name("Cocome").reps(1).simucom(1).allocation(CocomeExample.allocation).usagemodel(CocomeExample.usage)
-				.repository(CocomeExample.repo).system(CocomeExample.sys).env(CocomeExample.env)
+		ExperimentRepository exec = ExperimentBuilder.create().experiment().desc("Cocome Execution").name("Cocome")
+				.reps(1).simucom(50).allocation(CocomeExample.allocation).usagemodel(CocomeExample.usage)
+				.repository(CocomeExample.repo).system(CocomeExample.sys).env(CocomeExample.env).measurementtime(360000)
 				.slos(CocomeExample.slo_repo).finish().build();
 
 		PalladioAnalysisResults res = executor.run(exec);
 		for (Map.Entry<MeasuringPoint, MeasuringPointResults> ent : res.entries()) {
-			System.out.println(ent.getKey().getStringRepresentation() + " = " + ent.getValue().getYValues().stream()
-					.mapToDouble(m -> m.doubleValue(SI.SECOND)).average().orElse(0));
+			System.out.println("Metric ID: " + ent.getValue().getMetricDescription().getTextualDescription());
+			System.out
+					.println(
+							ent.getKey().getStringRepresentation() + " = "
+									+ ent.getValue().getYValues().stream().mapToDouble(m -> m.doubleValue(SI.SECOND))
+											.average().orElse(0)
+									+ " {size = " + ent.getValue().getYValues().size() + "}");
 		}
 	}
 

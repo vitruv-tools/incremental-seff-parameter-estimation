@@ -2,6 +2,7 @@ package tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio;
 
 import org.palladiosimulator.experimentautomation.abstractsimulation.AbstractsimulationFactory;
 import org.palladiosimulator.experimentautomation.abstractsimulation.MeasurementCountStopCondition;
+import org.palladiosimulator.experimentautomation.abstractsimulation.SimTimeStopCondition;
 import org.palladiosimulator.experimentautomation.application.tooladapter.simucom.model.SimuComConfiguration;
 import org.palladiosimulator.experimentautomation.application.tooladapter.simucom.model.SimucomtooladapterFactory;
 import org.palladiosimulator.experimentautomation.application.tooladapter.simulizar.model.SimuLizarConfiguration;
@@ -50,7 +51,7 @@ public class ExperimentBuilder {
 			this.enclosing = enclosing;
 
 			this.experiment.setExperimentDesign(ExperimentsFactory.eINSTANCE.createFullFactorialDesign());
-			this.experiment.setResponseMeasurement(ExperimentsFactory.eINSTANCE.createSimulationDurationMeasurement());
+			this.experiment.setResponseMeasurement(ExperimentsFactory.eINSTANCE.createProfilingMeasurement());
 
 			this.experiment.setInitialModel(ExperimentsFactory.eINSTANCE.createInitialModel());
 		}
@@ -86,6 +87,13 @@ public class ExperimentBuilder {
 					.createMeasurementCountStopCondition();
 			cond.setMeasurementCount(measures);
 			this.experiment.getStopConditions().add(cond);
+			return this;
+		}
+
+		public BuilderExperiment measurementtime(int time) {
+			SimTimeStopCondition stopCond = AbstractsimulationFactory.eINSTANCE.createSimTimeStopCondition();
+			stopCond.setSimulationTime(time);
+			this.experiment.getStopConditions().add(stopCond);
 			return this;
 		}
 

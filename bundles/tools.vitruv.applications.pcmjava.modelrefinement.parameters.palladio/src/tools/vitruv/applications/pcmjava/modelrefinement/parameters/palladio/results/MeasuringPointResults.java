@@ -6,13 +6,19 @@ import java.util.stream.Collectors;
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 
+import org.palladiosimulator.metricspec.MetricDescription;
+
 public class MeasuringPointResults {
 	private List<Measure<Double, Duration>> xValues;
 	private List<Measure<Double, Duration>> yValues;
 
-	public MeasuringPointResults() {
+	private MetricDescription metricDescription;
+
+	public MeasuringPointResults(MetricDescription desc) {
 		this.xValues = null;
 		this.yValues = null;
+
+		this.metricDescription = desc;
 	}
 
 	public void applyLongValues(List<Measure<Long, Duration>> values) {
@@ -35,6 +41,10 @@ public class MeasuringPointResults {
 
 	public List<Measure<Double, Duration>> getYValues() {
 		return yValues;
+	}
+
+	public MetricDescription getMetricDescription() {
+		return metricDescription;
 	}
 
 }
