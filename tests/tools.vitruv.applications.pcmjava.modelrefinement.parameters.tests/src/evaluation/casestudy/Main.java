@@ -29,14 +29,14 @@ public class Main {
         System.in.read();
 
         // evaluation 1 (in thesis)
-        evaluationEstimationRun(500, 0, 1, "default");
-        evaluationCompareRun(500, 5, 10, "default-changed");
-        evaluationEstimationRun(500, 5, 5, "threaded");
-        evaluationCompareRun(500, 5, 10, "threaded-changed");
+        evaluationEstimationRun(500, 0, 1, Common.EvaluationData.Default);
+        evaluationCompareRun(500, 5, 10, Common.getChangedName(Common.EvaluationData.Default));
+        evaluationEstimationRun(500, 5, 5, Common.EvaluationData.Threaded);
+        evaluationCompareRun(500, 5, 10, Common.getChangedName(Common.EvaluationData.Threaded));
      
         // evaluation 2
-        evaluationEstimationRun(100, 500, 5, "threaded-2");
-        evaluationCompareRun(100, 500, 10, "threaded-2-changed");
+        evaluationEstimationRun(100, 500, 5, Common.EvaluationData.Threaded2);
+        evaluationCompareRun(100, 500, 10, Common.getChangedName(Common.EvaluationData.Threaded2));
 
         System.out.println("Finished performance monitoring.");
     }

@@ -15,6 +15,16 @@ public class Common {
     
     public static String ResultsPath = DataRootPath + "results-data-2/";
     
+    public static class EvaluationData {
+        public static final String Default = "default";
+        public static final String Threaded = "threaded";
+        public static final String Threaded2 = "threaded-2";
+    }
+    
+    public static String getChangedName(String name) {
+        return name + "-changed";
+    }
+    
     public final Mode logMode;
 
     public final Mode runMode;

@@ -31,15 +31,9 @@ public class SeffParameterEstimationTest {
         PcmUtils.saveModel(Common.DataRootPath + "/results/" + c.logMode + "/result.repository", repository);
     }
 
-    public static class EvaluationData {
-        public static final String Default = "default";
-        public static final String Threaded = "threaded";
-        public static final String Threaded2 = "threaded-2";
-    }
+    public static final String CurrentEvaluationData = Common.EvaluationData.Default;
 
-    public static final String CurrentEvaluationData = EvaluationData.Default;
-
-    private void storeUtilization(Common c, MonitoringDataSet monitoringData)
+    private static void storeUtilization(Common c, MonitoringDataSet monitoringData)
             throws IOException {
         Long earliest = monitoringData.getResponseTimes().getEarliestEntry();
         Long last = monitoringData.getResponseTimes().getLatestEntry();
@@ -58,12 +52,12 @@ public class SeffParameterEstimationTest {
     
     @Test
     public void evaluation() throws Exception {
-        this.evaluationStep(EvaluationData.Default);
-        this.evaluationStep(EvaluationData.Threaded);
-        this.evaluationStep(EvaluationData.Threaded2);
+        evaluationStep(Common.EvaluationData.Default);
+        evaluationStep(Common.EvaluationData.Threaded);
+        evaluationStep(Common.EvaluationData.Threaded2);
     }
 
-    public void evaluationStep(String name) throws Exception {
+    public static void evaluationStep(String name) throws Exception {
         Common c;
         
         // iteration 0
