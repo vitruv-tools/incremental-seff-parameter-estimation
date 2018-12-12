@@ -1,4 +1,4 @@
-package evaluation.dataset;
+package tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.dataset;
 
 import java.util.Map;
 
@@ -9,17 +9,17 @@ import tools.vitruv.applications.pcmjava.modelrefinement.parameters.loop.LoopDat
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.rd.ResponseTimeDataSet;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.rd.utilization.ResourceUtilizationDataSet;
 
-public class EvaluationMonitoringDataSet implements MonitoringDataSet {
+public class MockMonitoringDataSet implements MonitoringDataSet {
 
-    private final EvaluationLoopDataSet loopDataSet;
-    private final EvaluationBranchDataSet branchDataSet;
+    private final MockLoopDataSet loopDataSet;
+    private final MockBranchDataSet branchDataSet;
 
-    private final EvaluationServiceCallDataSet serviceCallDataSet;
+    private final MockServiceCallDataSet serviceCallDataSet;
 
-    public EvaluationMonitoringDataSet() {
-        this.loopDataSet = new EvaluationLoopDataSet();
-        this.branchDataSet = new EvaluationBranchDataSet();
-        this.serviceCallDataSet = new EvaluationServiceCallDataSet();
+    public MockMonitoringDataSet() {
+        this.loopDataSet = new MockLoopDataSet();
+        this.branchDataSet = new MockBranchDataSet();
+        this.serviceCallDataSet = new MockServiceCallDataSet();
     }
 
     public void addLoop(Map<String, Object> serviceArguments, long iterations) {
@@ -44,13 +44,11 @@ public class EvaluationMonitoringDataSet implements MonitoringDataSet {
 
     @Override
     public ResourceUtilizationDataSet getResourceUtilizations() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public ResponseTimeDataSet getResponseTimes() {
-        // TODO Auto-generated method stub
         return null;
     }
 

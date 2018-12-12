@@ -23,8 +23,6 @@ import java.util.function.LongSupplier;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
-import evaluation.dataset.Common;
-import evaluation.dataset.EvaluationMonitoringDataSet;
 import evaluation.utils.CsvWriter;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.ServiceParameters;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.branch.impl.BranchModel;
@@ -37,6 +35,8 @@ import tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring.r
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.rd.impl.ResourceDemandModel;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.rd.impl.WekaParametricDependencyEstimationStrategy;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.rd.impl.WekaResourceDemandModel;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.dataset.Common;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.dataset.MockMonitoringDataSet;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.trees.J48;
@@ -332,9 +332,9 @@ public class GenerateFunctionsData {
         resourceDemandEvaluation(generateResourceDemandData(arguments -> DEPENDENT_CONST_DOUBLE, dataAmount));
     }
 
-    private static EvaluationMonitoringDataSet generateBranchData(Function<Map<String, Object>, Boolean> transition,
+    private static MockMonitoringDataSet generateBranchData(Function<Map<String, Object>, Boolean> transition,
             int amount) throws Exception {
-        EvaluationMonitoringDataSet dataSet = new EvaluationMonitoringDataSet();
+        MockMonitoringDataSet dataSet = new MockMonitoringDataSet();
         Random random = new Random(0);
 
         for (int i = 0; i < amount; i++) {
@@ -344,11 +344,11 @@ public class GenerateFunctionsData {
         return dataSet;
     }
 
-    private static void branchEvaluation(EvaluationMonitoringDataSet dataSet) throws Exception {
+    private static void branchEvaluation(MockMonitoringDataSet dataSet) throws Exception {
         branchEvaluation(dataSet, null);
     }
 
-    private static void branchEvaluation(EvaluationMonitoringDataSet dataSet, String graphFilePath) throws Exception {
+    private static void branchEvaluation(MockMonitoringDataSet dataSet, String graphFilePath) throws Exception {
         TreeWekaBranchModelEstimation estimation = new TreeWekaBranchModelEstimation(dataSet.getServiceCalls(),
                 dataSet.getBranches());
 
@@ -407,9 +407,9 @@ public class GenerateFunctionsData {
         tv.fitToScreen();
     }
 
-    private static EvaluationMonitoringDataSet generateLoopData(Function<Map<String, Object>, Integer> iterations,
+    private static MockMonitoringDataSet generateLoopData(Function<Map<String, Object>, Integer> iterations,
             int amount) throws Exception {
-        EvaluationMonitoringDataSet dataSet = new EvaluationMonitoringDataSet();
+        MockMonitoringDataSet dataSet = new MockMonitoringDataSet();
         Random random = new Random(0);
 
         for (int i = 0; i < amount; i++) {
@@ -419,7 +419,7 @@ public class GenerateFunctionsData {
         return dataSet;
     }
 
-    private static void loopEvaluation(EvaluationMonitoringDataSet dataSet) throws Exception {
+    private static void loopEvaluation(MockMonitoringDataSet dataSet) throws Exception {
         WekaLoopModelEstimation estimation = new WekaLoopModelEstimation(dataSet.getServiceCalls(), dataSet.getLoops());
         WekaLoopModel loopModel = (WekaLoopModel) estimation.estimate(Common.DEFAULT_MODEL_ID);
         Evaluation evaluation = new Evaluation(loopModel.getDataSet());
@@ -539,9 +539,9 @@ public class GenerateFunctionsData {
             factor = 1.0 / diff;
         }
 
-        public EvaluationMonitoringDataSet createDataSet(
-                TriConsumer<FunctionDataSet, FunctionDataPoint, EvaluationMonitoringDataSet> valueAdder) {
-            EvaluationMonitoringDataSet dataSet = new EvaluationMonitoringDataSet();
+        public MockMonitoringDataSet createDataSet(
+                TriConsumer<FunctionDataSet, FunctionDataPoint, MockMonitoringDataSet> valueAdder) {
+            MockMonitoringDataSet dataSet = new MockMonitoringDataSet();
             for (FunctionDataPoint dataPoint : result) {
                 valueAdder.accept(this, dataPoint, dataSet);
             }

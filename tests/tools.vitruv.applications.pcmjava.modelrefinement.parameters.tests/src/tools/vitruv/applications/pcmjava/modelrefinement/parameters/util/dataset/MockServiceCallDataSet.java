@@ -1,13 +1,13 @@
-package evaluation.dataset;
+package tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.dataset;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import evaluation.dataset.ServiceCallDataSetImpl.ServiceCallImpl;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.ServiceParameters;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.dataset.ServiceCallDataSetImpl.ServiceCallImpl;
 
-public class EvaluationServiceCallDataSet extends ServiceCallDataSetImpl {
+public class MockServiceCallDataSet extends ServiceCallDataSetImpl {
 
     public String add(Map<String, Object> serviceArguments) {
         return this.add(serviceArguments, Common.DEFAULT_SERVICE_ID, Common.TIME_NOT_SET, Common.TIME_NOT_SET,

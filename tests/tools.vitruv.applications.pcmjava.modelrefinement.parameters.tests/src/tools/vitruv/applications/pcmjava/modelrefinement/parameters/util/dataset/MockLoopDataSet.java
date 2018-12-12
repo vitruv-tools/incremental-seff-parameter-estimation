@@ -1,4 +1,4 @@
-package evaluation.dataset;
+package tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.dataset;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,10 +9,10 @@ import java.util.Set;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.loop.LoopDataSet;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring.records.LoopRecord;
 
-public class EvaluationLoopDataSet implements LoopDataSet {
+public class MockLoopDataSet implements LoopDataSet {
     private final Map<String, List<LoopRecord>> loopIdToRecord;
 
-    public EvaluationLoopDataSet() {
+    public MockLoopDataSet() {
         this.loopIdToRecord = new HashMap<>();
     }
 

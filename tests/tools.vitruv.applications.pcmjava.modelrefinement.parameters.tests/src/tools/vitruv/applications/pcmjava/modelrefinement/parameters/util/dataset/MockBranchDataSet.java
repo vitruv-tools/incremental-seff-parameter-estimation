@@ -1,4 +1,4 @@
-package evaluation.dataset;
+package tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.dataset;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,10 +11,10 @@ import tools.vitruv.applications.pcmjava.modelrefinement.parameters.loop.LoopDat
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring.records.BranchRecord;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring.records.LoopRecord;
 
-public class EvaluationBranchDataSet implements BranchDataSet {
+public class MockBranchDataSet implements BranchDataSet {
     private final Map<String, List<BranchRecord>> branchIdToRecord;
 
-    public EvaluationBranchDataSet() {
+    public MockBranchDataSet() {
         this.branchIdToRecord = new HashMap<>();
     }
 

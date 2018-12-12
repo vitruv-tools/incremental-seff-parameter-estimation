@@ -91,6 +91,15 @@ public class BranchEstimationImpl implements BranchEstimation, BranchPrediction 
 
         this.applyEstimations(pcmModel);
     }
+    
+    /**
+     * Gets the branch model for a branch id.
+     * @param branchId The id of the branch, the model is created for.
+     * @return The branch model or empty.
+     */
+    public Optional<BranchModel> get(String branchId) {
+        return Optional.ofNullable(this.modelCache.get(branchId));
+    }
 
     private void applyEstimations(final Repository pcmModel) {
         List<BranchAction> branches = PcmUtils.getObjects(pcmModel, BranchAction.class);
