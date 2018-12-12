@@ -355,12 +355,12 @@ public class GenerateFunctionsData {
         BranchModel model = estimation.estimate(Common.DEFAULT_MODEL_ID);
         if (model instanceof WekaBranchModel) {
             WekaBranchModel branchModel = (WekaBranchModel) model;
-            Evaluation evaluation = new Evaluation(branchModel.getDataset());
-            evaluation.crossValidateModel(branchModel.getClassifier(), branchModel.getDataset(), 10, new Random(0));
+            Evaluation evaluation = new Evaluation(branchModel.getDataSet());
+            evaluation.crossValidateModel(branchModel.getClassifier(), branchModel.getDataSet(), 10, new Random(0));
 
             System.out.println(evaluation.toSummaryString());
 
-            int index = branchModel.getDataset().classAttribute().indexOfValue(BRANCH_TRANSITION_ID1);
+            int index = branchModel.getDataSet().classAttribute().indexOfValue(BRANCH_TRANSITION_ID1);
             double tp = evaluation.numTruePositives(index);
             double tn = evaluation.numTrueNegatives(index);
             double fp = evaluation.numFalsePositives(index);
@@ -422,8 +422,8 @@ public class GenerateFunctionsData {
     private static void loopEvaluation(EvaluationMonitoringDataSet dataSet) throws Exception {
         WekaLoopModelEstimation estimation = new WekaLoopModelEstimation(dataSet.getServiceCalls(), dataSet.getLoops());
         WekaLoopModel loopModel = (WekaLoopModel) estimation.estimate(Common.DEFAULT_MODEL_ID);
-        Evaluation evaluation = new Evaluation(loopModel.getDataset());
-        evaluation.crossValidateModel(loopModel.getClassifier(), loopModel.getDataset(), 10, new Random(0));
+        Evaluation evaluation = new Evaluation(loopModel.getDataSet());
+        evaluation.crossValidateModel(loopModel.getClassifier(), loopModel.getDataSet(), 10, new Random(0));
         System.out.println(evaluation.toSummaryString());
         System.out.println(loopModel.getIterationsStochasticExpression());
         // printErrors(loopModel.getClassifier(), loopModel.getDataset());

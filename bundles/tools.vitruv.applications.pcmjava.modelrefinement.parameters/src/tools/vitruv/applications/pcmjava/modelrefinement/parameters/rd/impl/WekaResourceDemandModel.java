@@ -3,7 +3,7 @@ package tools.vitruv.applications.pcmjava.modelrefinement.parameters.rd.impl;
 import java.util.StringJoiner;
 
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.ServiceCall;
-import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.WekaServiceParametersModel;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.WekaDataSet;
 import weka.classifiers.functions.LinearRegression;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -11,16 +11,13 @@ import weka.core.Instances;
 public class WekaResourceDemandModel implements ResourceDemandModel {
 
     private final LinearRegression classifier;
-    private final WekaServiceParametersModel parametersConversion;
-    private final Instances dataset;
+    private final WekaDataSet<Double> dataset;
 
-    public WekaResourceDemandModel(final Instances dataset,
-            final WekaServiceParametersModel parametersConversion) throws Exception {
+    public WekaResourceDemandModel(final WekaDataSet<Double> dataset) throws Exception {
         this.dataset = dataset;
-        this.parametersConversion = parametersConversion;
         
         this.classifier = new LinearRegression();
-        this.classifier.buildClassifier(dataset);
+        this.classifier.buildClassifier(dataset.getDataSet());
     }
 
     
@@ -30,13 +27,13 @@ public class WekaResourceDemandModel implements ResourceDemandModel {
 
 
     public Instances getDataset() {
-        return dataset;
+        return dataset.getDataSet();
     }
 
 
     @Override
     public double predictResourceDemand(final ServiceCall serviceCall) {
-        Instance parametersInstance = this.parametersConversion.buildInstance(serviceCall.getParameters(), 0);
+        Instance parametersInstance = this.dataset.buildTestInstance(serviceCall.getParameters());
         try {
             return this.classifier.classifyInstance(parametersInstance);
         } catch (Exception e) {
@@ -54,7 +51,7 @@ public class WekaResourceDemandModel implements ResourceDemandModel {
                 continue;
             }
             StringBuilder coefficientPart = new StringBuilder();
-            String paramStoEx = this.parametersConversion.getStochasticExpressionForIndex(i);
+            String paramStoEx = this.dataset.getStochasticExpressionForIndex(i);
             coefficientPart.append(coefficients[i]).append(" * ").append(paramStoEx);
             result.add(coefficientPart.toString());
             braces++;

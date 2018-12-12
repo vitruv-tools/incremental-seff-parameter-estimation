@@ -1,5 +1,5 @@
 package tools.vitruv.applications.pcmjava.modelrefinement.parameters.util;
 
-public enum WekaServiceParametersModelMode {
+public enum WekaDataSetMode {
     IntegerOnly, NumericOnly, NoTransformations
 }

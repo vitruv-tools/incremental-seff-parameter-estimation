@@ -3,7 +3,7 @@ package tools.vitruv.applications.pcmjava.modelrefinement.parameters.loop.impl;
 import java.util.StringJoiner;
 
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.ServiceCall;
-import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.WekaServiceParametersModel;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.WekaDataSet;
 import weka.classifiers.functions.LinearRegression;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -12,30 +12,27 @@ public class WekaLoopModel implements LoopModel {
 
     private final LinearRegression classifier;
 
-    private final WekaServiceParametersModel parametersConversion;
+    private final WekaDataSet<Long> dataset;
 
-    private final Instances dataset;
-
-    public WekaLoopModel(final Instances dataset, final WekaServiceParametersModel parametersConversion)
+    public WekaLoopModel(final WekaDataSet<Long> dataset)
             throws Exception {
         this.dataset = dataset;
-        this.parametersConversion = parametersConversion;
 
         this.classifier = new LinearRegression();
-        this.classifier.buildClassifier(this.dataset);
+        this.classifier.buildClassifier(this.dataset.getDataSet());
     }
 
     public LinearRegression getClassifier() {
         return classifier;
     }
 
-    public Instances getDataset() {
-        return dataset;
+    public Instances getDataSet() {
+        return dataset.getDataSet();
     }
 
     @Override
     public double predictIterations(final ServiceCall serviceCall) {
-        Instance parametersInstance = this.parametersConversion.buildInstance(serviceCall.getParameters(), 0);
+        Instance parametersInstance = this.dataset.buildTestInstance(serviceCall.getParameters());
         try {
             return this.classifier.classifyInstance(parametersInstance);
         } catch (Exception e) {
@@ -54,7 +51,7 @@ public class WekaLoopModel implements LoopModel {
                 continue;
             }
             StringBuilder coefficientPart = new StringBuilder();
-            String paramStoEx = this.parametersConversion.getStochasticExpressionForIndex(i);
+            String paramStoEx = this.dataset.getStochasticExpressionForIndex(i);
             coefficientPart.append(coefficient).append(" * ").append(paramStoEx);
             result.add(coefficientPart.toString());
             braces++;

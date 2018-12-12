@@ -2,16 +2,12 @@ package tools.vitruv.applications.pcmjava.modelrefinement.parameters.rd.impl;
 
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Random;
 
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.ServiceCall;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.ServiceParameters;
-import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.WekaServiceParametersModel;
-import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.WekaServiceParametersModelMode;
-import weka.classifiers.Evaluation;
-import weka.core.Attribute;
-import weka.core.Instance;
-import weka.core.Instances;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.WekaDataSet;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.WekaDataSetBuilder;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.WekaDataSetMode;
 
 /**
  * Implements the resource demand parametric dependency estimation by using linear regression from the weka library.
@@ -43,19 +39,14 @@ public class WekaParametricDependencyEstimationStrategy implements ParametricDep
             return new ConstantResourceDemandModel(singleValue);
         }
 
-        ServiceParameters prototypeParameters = resourceDemands.keySet().iterator().next();
-
-        Attribute classAttribute = new Attribute("resourceDemand");
-        WekaServiceParametersModel parametersConversion = new WekaServiceParametersModel(prototypeParameters,
-                classAttribute, WekaServiceParametersModelMode.NumericOnly);
-        Instances dataset = parametersConversion.buildDataSet();
-
+        WekaDataSetBuilder<Double> dataSetBuilder = new WekaDataSetBuilder<Double>(WekaDataSetMode.NumericOnly);
+        
         for (Entry<ServiceParameters, Double> rdEntry : resourceDemands.entrySet()) {
-            Instance dataPoint = parametersConversion.buildInstance(rdEntry.getKey(), rdEntry.getValue());
-            dataset.add(dataPoint);
+            dataSetBuilder.addInstance(rdEntry.getKey(), rdEntry.getValue());
         }
 
-        return new WekaResourceDemandModel(dataset, parametersConversion);
+        WekaDataSet<Double> dataset = dataSetBuilder.build();
+        return new WekaResourceDemandModel(dataset);
     }
 
     private static class ConstantResourceDemandModel implements ResourceDemandModel {

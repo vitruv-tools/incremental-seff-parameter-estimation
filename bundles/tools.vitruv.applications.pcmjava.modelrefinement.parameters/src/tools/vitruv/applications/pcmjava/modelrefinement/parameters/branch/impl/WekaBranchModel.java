@@ -4,7 +4,7 @@ import java.util.Optional;
 import java.util.Random;
 
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.ServiceCall;
-import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.WekaServiceParametersModel;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.WekaDataSet;
 import weka.classifiers.trees.J48;
 import weka.classifiers.trees.j48.C45Split;
 import weka.classifiers.trees.j48.ClassifierSplitModel;
@@ -15,26 +15,23 @@ import weka.core.Instances;
 
 public class WekaBranchModel implements BranchModel {
     private final WekaBranchModel.StochasticExpressionJ48 classifier;
-    private final WekaServiceParametersModel parametersModel;
     private final Random random;
     private final String branchNotExecutedId;
     private final String[] attributeExpressions;
-    
-    private final Instances dataset;
 
-    public WekaBranchModel(final Instances dataset,
-            final WekaServiceParametersModel parametersConversion,
+    private final WekaDataSet<String> dataset;
+
+    public WekaBranchModel(final WekaDataSet<String> dataset,
             final Random random, final String branchNotExecutedId) throws Exception {
         this.dataset = dataset;
-        this.parametersModel = parametersConversion;
         WekaBranchModel.StochasticExpressionJ48 tree = new StochasticExpressionJ48();
-        tree.buildClassifier(dataset);
+        tree.buildClassifier(dataset.getDataSet());
         this.classifier = tree;
         this.random = random;
         this.branchNotExecutedId = branchNotExecutedId;
-        this.attributeExpressions = new String[parametersConversion.getInputAttributesCount()];
+        this.attributeExpressions = new String[dataset.getInputAttributesCount()];
         for (int i = 0; i < this.attributeExpressions.length; i++) {
-            this.attributeExpressions[i] = parametersConversion.getStochasticExpressionForIndex(i);
+            this.attributeExpressions[i] = dataset.getStochasticExpressionForIndex(i);
         }
     }
 
@@ -42,14 +39,14 @@ public class WekaBranchModel implements BranchModel {
         return classifier;
     }
 
-    public Instances getDataset() {
-        return dataset;
+    public Instances getDataSet() {
+        return dataset.getDataSet();
     }
 
     @Override
     public Optional<String> predictBranchId(final ServiceCall serviceCall) {
-        Instance parametersInstance = this.parametersModel.buildInstance(serviceCall.getParameters(), 0);
-        Instances dataset = this.parametersModel.buildDataSet();
+        Instance parametersInstance = this.dataset.buildTestInstance(serviceCall.getParameters());
+        Instances dataset = this.dataset.getDataSet();
         dataset.add(parametersInstance);
         double[] branchDistribution;
         try {
@@ -71,7 +68,7 @@ public class WekaBranchModel implements BranchModel {
             selectedBranchIndex++;
         }
 
-        String result = this.parametersModel.getClassAttribute().value(selectedBranchIndex);
+        String result = this.dataset.getClassAttribute().value(selectedBranchIndex);
 
         if (result.equals(this.branchNotExecutedId)) {
             return Optional.empty();
@@ -84,7 +81,7 @@ public class WekaBranchModel implements BranchModel {
     public String getBranchStochasticExpression(final String transitionId) {
         return this.classifier.getBranchStochasticExpression(0, this.attributeExpressions);
     }
-    
+
     public static class StochasticExpressionJ48 extends J48 {
 
         /** for serialization */

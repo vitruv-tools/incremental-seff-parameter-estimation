@@ -15,10 +15,8 @@ import tools.vitruv.applications.pcmjava.modelrefinement.parameters.ServiceCallD
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.branch.BranchDataSet;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring.records.BranchRecord;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.WekaDataSet;
-import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.WekaServiceParametersModelMode;
-import weka.classifiers.Evaluation;
-import weka.core.Attribute;
-import weka.core.Instances;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.WekaDataSetBuilder;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.WekaDataSetMode;
 
 /**
  * Implements the branch model estimation by using a J48 tree from the weka library. The tree can then be transformed
@@ -101,31 +99,27 @@ public class TreeWekaBranchModelEstimation {
             throw new IllegalStateException("No records for branch id " + branchId + " found.");
         }
 
-        BranchRecord firstRecord = records.get(0);
-
-        List<String> branchExecutedLabels = branchExecutionIds.stream().collect(Collectors.toList());
+        
 
         // Check if every time the same branch is executed. Weka cannot handle unary
         // class attributes.
+        Set<String> branchExecutedLabels = branchExecutionIds.stream().collect(Collectors.toSet());
         if (branchExecutedLabels.size() == 0) {
             return new ConstantBranchModel(Optional.empty());
         } else if (branchExecutedLabels.size() == 1) {
-            return new ConstantBranchModel(Optional.of(branchExecutedLabels.get(0)));
+            return new ConstantBranchModel(Optional.of(branchExecutedLabels.stream().iterator().next()));
         }
 
-        Attribute branchExecutedAttribute = new Attribute("branchExecuted", branchExecutedLabels);
-
-        WekaDataSet dataSetBuilder = new WekaDataSet(this.serviceCalls, firstRecord.getServiceExecutionId(),
-                branchExecutedAttribute, WekaServiceParametersModelMode.NoTransformations);
+        WekaDataSetBuilder<String> dataSetBuilder = new WekaDataSetBuilder<>(this.serviceCalls,
+                WekaDataSetMode.NoTransformations);
 
         for (BranchRecord record : records) {
-            double classValue = branchExecutedLabels.indexOf(record.getExecutedBranchId());
-            dataSetBuilder.addInstance(record.getServiceExecutionId(), classValue);
+            dataSetBuilder.addInstance(record.getServiceExecutionId(), record.getExecutedBranchId());
         }
 
-        Instances dataset = dataSetBuilder.getDataSet();
+        WekaDataSet<String> dataset = dataSetBuilder.build();
 
-        return new WekaBranchModel(dataset, dataSetBuilder.getServiceParametersModel(), this.random,
+        return new WekaBranchModel(dataset, this.random,
                 this.branchExecutions.getBranchNotExecutedId());
     }
 

@@ -3,16 +3,11 @@ package tools.vitruv.applications.pcmjava.modelrefinement.parameters.loop.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.ServiceCallDataSet;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.loop.LoopDataSet;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring.records.LoopRecord;
-import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.WekaDataSet;
-import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.WekaServiceParametersModelMode;
-import weka.classifiers.Evaluation;
-import weka.core.Attribute;
-import weka.core.Instances;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.WekaDataSetBuilder;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.WekaDataSetMode;
 
 /**
  * Implements the loop model estimation by using linear regression from the weka library. This does not imply that only
@@ -77,21 +72,14 @@ public class WekaLoopModelEstimation {
             throw new IllegalStateException("No records for loop id " + loopId + " found.");
         }
 
-        LoopRecord firstRecord = records.get(0);
-
-        Attribute loopIterations = new Attribute("loopIterations");
-
-        WekaDataSet dataSetBuilder = new WekaDataSet(
+        WekaDataSetBuilder<Long> dataSetBuilder = new WekaDataSetBuilder<Long>(
                 this.serviceCalls,
-                firstRecord.getServiceExecutionId(),
-                loopIterations,
-                WekaServiceParametersModelMode.IntegerOnly);
+                WekaDataSetMode.IntegerOnly);
 
         for (LoopRecord record : records) {
             dataSetBuilder.addInstance(record.getServiceExecutionId(), record.getLoopIterationCount());
         }
 
-        Instances dataset = dataSetBuilder.getDataSet();
-        return new WekaLoopModel(dataset, dataSetBuilder.getServiceParametersModel());
+        return new WekaLoopModel(dataSetBuilder.build());
     }
 }
