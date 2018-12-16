@@ -1,6 +1,9 @@
 package evaluation.casestudy;
 
+<<<<<<< Upstream, based on origin/master
 import evaluation.dependencies.Action;
+=======
+>>>>>>> 0db986a Intermediate commit.
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring.ServiceParameters;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring.ThreadMonitoringController;
 
@@ -15,6 +18,8 @@ public class A {
     }
 
     public int methodA(final int a) {
+        ThreadMonitoringController.getInstance().resetOverhead();
+
         c.whenOn(() -> {
             ServiceParameters serviceParameters = new ServiceParameters();
             serviceParameters.addInt("a", a);
@@ -66,7 +71,7 @@ public class A {
         c.logOnIteration(Mode.Iteration0, "_SSitEMjSEeiWRYm1yDC5rQ", ___loopIterationsCount_1);
 
         if (c.mustRun(Mode.Iteration1)) {
-            
+
             // Monitoring actions start
             String ___executedBranchId_2 = null;
             // Monitoring actions end
@@ -83,6 +88,8 @@ public class A {
 
             c.logBranchOnIteration(Mode.Iteration1, "_8icPAMwMEeiWXYGpzxFH0A", ___executedBranchId_2);
         }
+
+        System.out.println("Overhead was:" + ThreadMonitoringController.getInstance().getOverhead());
 
         return result;
     }

@@ -1,4 +1,4 @@
-package tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel;
+package tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.iobserve;
 
 import java.util.HashMap;
 import java.util.Map;

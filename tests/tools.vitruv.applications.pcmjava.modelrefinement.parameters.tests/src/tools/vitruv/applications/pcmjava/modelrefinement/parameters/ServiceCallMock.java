@@ -9,6 +9,7 @@ public class ServiceCallMock implements ServiceCall {
     private String serviceId = "not set";
     private String callerServiceExecutionId = "not set";
     private String callerId = "not set";
+    private String sessionId = "not set";
     private long entryTime = 0;
     private long exitTime = 0;
 
@@ -95,6 +96,11 @@ public class ServiceCallMock implements ServiceCall {
     @Override
     public double timeToSeconds(long time) {
         return 0;
+    }
+
+    @Override
+    public String getSessionId() {
+        return this.sessionId;
     }
 
 }

@@ -1,0 +1,5 @@
+$0=kieker.common.record.misc.KiekerMetadataRecord
+$1=org.cocome.tradingsystem.inventory.application.store.monitoring.records.ResponseTimeRecord
+$2=org.cocome.tradingsystem.inventory.application.store.monitoring.records.ServiceCallRecord
+$3=org.cocome.tradingsystem.inventory.application.store.monitoring.records.LoopRecord
+$4=kieker.common.record.system.CPUUtilizationRecord

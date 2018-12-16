@@ -36,6 +36,10 @@ public class ServiceParameters {
         this.stringBuilder.append("\"").append(name).append(".VALUE\":").append(value).append(",");
     }
 
+    public void addNumberOfElements(final String name, final int value) {
+        this.stringBuilder.append("\"").append(name).append(".NUMBER_OF_ELEMENTS\":").append(value).append(",");
+    }
+
     /**
      * Appends an integer parameter.
      *

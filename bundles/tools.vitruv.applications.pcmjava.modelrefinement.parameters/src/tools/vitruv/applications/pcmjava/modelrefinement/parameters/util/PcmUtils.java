@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -16,7 +17,10 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.palladiosimulator.pcm.PcmPackage;
 import org.palladiosimulator.pcm.allocation.Allocation;
+import org.palladiosimulator.pcm.repository.OperationProvidedRole;
 import org.palladiosimulator.pcm.repository.Repository;
+import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
+import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
 
 /**
@@ -39,7 +43,7 @@ public class PcmUtils {
 	 * @return A list of all found objects or an empty list.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T extends EObject> List<T> getObjects(final Repository pcmModel, final Class<T> type) {
+	public static <T extends EObject> List<T> getObjects(final EObject pcmModel, final Class<T> type) {
 		List<T> results = new ArrayList<>();
 		TreeIterator<EObject> it = pcmModel.eAllContents();
 		while (it.hasNext()) {
@@ -137,5 +141,42 @@ public class PcmUtils {
 
 		Resource resource = resourceSet.getResource(filePathUri, true);
 		return clazz.cast(resource.getContents().get(0));
+	}
+
+	public static <T extends EObject> void saveToFile(T model, String path) {
+		URI writeModelURI = URI.createFileURI(path);
+
+		final Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
+		final Map<String, Object> map = resourceRegistry.getExtensionToFactoryMap();
+		map.put("*", new XMIResourceFactoryImpl());
+
+		final ResourceSet resourceSet = new ResourceSetImpl();
+		resourceSet.setResourceFactoryRegistry(resourceRegistry);
+
+		final Resource resource = resourceSet.createResource(writeModelURI);
+		resource.getContents().add(model);
+		try {
+			resource.save(null);
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static ResourceDemandingSEFF resolveSEFF(Repository repo, String seffId) {
+		return getObjects(repo, ResourceDemandingSEFF.class).stream().filter(seff -> seff.getId().equals(seffId))
+				.findFirst().orElse(null);
+	}
+
+	public static OperationProvidedRole getProvidedRole(ServiceEffectSpecification seff) {
+		// the cast is safe because it can only be returned if its instance of (see
+		// inner lambda)
+		return (OperationProvidedRole) seff.getBasicComponent_ServiceEffectSpecification()
+				.getProvidedRoles_InterfaceProvidingEntity().stream().filter(prov -> {
+					if (prov instanceof OperationProvidedRole) {
+						return ((OperationProvidedRole) prov).getProvidedInterface__OperationProvidedRole()
+								.getSignatures__OperationInterface().contains(seff.getDescribedService__SEFF());
+					}
+					return false;
+				}).findFirst().orElse(null);
 	}
 }
