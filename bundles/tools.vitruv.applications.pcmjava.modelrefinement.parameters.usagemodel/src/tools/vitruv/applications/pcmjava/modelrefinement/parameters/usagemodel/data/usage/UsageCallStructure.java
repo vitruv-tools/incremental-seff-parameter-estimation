@@ -17,9 +17,9 @@ import org.palladiosimulator.pcm.usagemodel.UsagemodelFactory;
 import de.uka.ipd.sdq.stoex.StoexFactory;
 import de.uka.ipd.sdq.stoex.VariableReference;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.ServiceCall;
-import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.data.ServiceCallUtil;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.mapping.MonitoringDataMapping;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.util.IntDistribution;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.util.ServiceCallUtil;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.PcmUtils;
 
 public class UsageCallStructure extends AbstractUsageElement {

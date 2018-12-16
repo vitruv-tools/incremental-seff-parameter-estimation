@@ -6,9 +6,9 @@ import java.util.List;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.usagemodel.AbstractUserAction;
 import org.palladiosimulator.pcm.usagemodel.Loop;
-import org.palladiosimulator.pcm.usagemodel.ScenarioBehaviour;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelFactory;
 
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.UsageScenarioBehaviourBuilder;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.mapping.MonitoringDataMapping;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.util.IntDistribution;
 
@@ -50,11 +50,8 @@ public class UsageLoopStructure extends AbstractUsageElement {
 		Loop loop = UsagemodelFactory.eINSTANCE.createLoop();
 		loop.setLoopIteration_Loop(iterations.toStochasticExpression());
 
-		for (AbstractUsageElement element : childs) {
-			ScenarioBehaviour innerBehaviour = UsagemodelFactory.eINSTANCE.createScenarioBehaviour();
-			loop.setBodyBehaviour_Loop(innerBehaviour);
-			loop.getBodyBehaviour_Loop().getActions_ScenarioBehaviour().add(element.toUserAction(repo, mapping));
-		}
+		UsageScenarioBehaviourBuilder innerBuilder = new UsageScenarioBehaviourBuilder(repo, mapping);
+		loop.setBodyBehaviour_Loop(innerBuilder.buildBehaviour(childs));
 
 		return loop;
 	}

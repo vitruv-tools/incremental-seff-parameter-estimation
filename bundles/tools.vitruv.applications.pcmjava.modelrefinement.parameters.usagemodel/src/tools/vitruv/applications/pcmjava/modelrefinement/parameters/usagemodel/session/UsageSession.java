@@ -3,36 +3,15 @@ package tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.tuple.Triple;
-import org.palladiosimulator.pcm.core.CoreFactory;
-import org.palladiosimulator.pcm.core.PCMRandomVariable;
-import org.palladiosimulator.pcm.parameter.ParameterFactory;
-import org.palladiosimulator.pcm.parameter.VariableCharacterisation;
-import org.palladiosimulator.pcm.parameter.VariableCharacterisationType;
-import org.palladiosimulator.pcm.parameter.VariableUsage;
-import org.palladiosimulator.pcm.repository.OperationSignature;
-import org.palladiosimulator.pcm.repository.Repository;
-import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
-import org.palladiosimulator.pcm.usagemodel.AbstractUserAction;
-import org.palladiosimulator.pcm.usagemodel.Delay;
-import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
-import org.palladiosimulator.pcm.usagemodel.ScenarioBehaviour;
-import org.palladiosimulator.pcm.usagemodel.Start;
-import org.palladiosimulator.pcm.usagemodel.Stop;
-import org.palladiosimulator.pcm.usagemodel.UsagemodelFactory;
 
-import de.uka.ipd.sdq.stoex.StoexFactory;
-import de.uka.ipd.sdq.stoex.VariableReference;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.ServiceCall;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.data.ServiceCallBundle;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.data.usage.AbstractUsageElement;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.data.usage.UsageCallStructure;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.data.usage.UsageLoopStructure;
-import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.mapping.MonitoringDataMapping;
-import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.PcmUtils;
 
 public class UsageSession {
 	private static final String CALLER_NOT_SET = "<not set>";
@@ -50,7 +29,7 @@ public class UsageSession {
 		}
 	}
 
-	public void compress() {
+	public List<AbstractUsageElement> compress() {
 		// sort before
 		sortCalls();
 
@@ -58,7 +37,7 @@ public class UsageSession {
 		List<ServiceCallBundle> bundles = bundleCalls();
 
 		// find structure
-		buildUsage(bundles, findRepeatingBundles(bundles));
+		return buildUsage(bundles, findRepeatingBundles(bundles));
 	}
 
 	private List<AbstractUsageElement> buildUsage(List<ServiceCallBundle> bundles,
@@ -196,111 +175,6 @@ public class UsageSession {
 		}
 
 		return bundles;
-	}
-
-	// TODO an improvement would be to automatically build loops and branches
-	// but => lower accuracy and much more effort (for small sessions not relevant)
-	// TODO outsource the chaining
-	public ScenarioBehaviour toBehaviour(Repository belRepository, MonitoringDataMapping mapping) {
-		// calls need to be sorted
-		this.sortCalls();
-
-		// do the derivation of the Behaviour
-		ScenarioBehaviour build = UsagemodelFactory.eINSTANCE.createScenarioBehaviour();
-		Start start = UsagemodelFactory.eINSTANCE.createStart();
-		AbstractUserAction current = start;
-		long currentTime = 0;
-
-		build.getActions_ScenarioBehaviour().add(start);
-
-		for (ServiceCall call : calls) {
-			// build delay
-			if (current != start) {
-				// the int cast is perfectly fine, we dont care about +- 1ms
-				int delayTime = (int) ((call.getEntryTime() - currentTime) / 1000000L);
-				Delay delay = UsagemodelFactory.eINSTANCE.createDelay();
-				delay.setTimeSpecification_Delay(buildIntLiteral(delayTime));
-
-				// chaining
-				current.setSuccessor(delay);
-				delay.setPredecessor(current);
-				build.getActions_ScenarioBehaviour().add(delay);
-				current = delay;
-			}
-
-			// get seff
-			ResourceDemandingSEFF seff = PcmUtils.resolveSEFF(belRepository, call.getServiceId());
-
-			// build entry call
-			EntryLevelSystemCall entryCall = UsagemodelFactory.eINSTANCE.createEntryLevelSystemCall();
-			entryCall
-					.setOperationSignature__EntryLevelSystemCall((OperationSignature) seff.getDescribedService__SEFF());
-			entryCall.setProvidedRole_EntryLevelSystemCall(PcmUtils.getProvidedRole(seff));
-
-			// parameter build
-			if (call.getParameters() != null) {
-				for (Entry<String, Object> parameter : call.getParameters().getParameters().entrySet()) {
-					if (mapping.hasSEFFParameterName(parameter.getKey())) {
-						// we need to build the parameter
-						String belongingSeffParameter = mapping.getSEFFParameterName(parameter.getKey());
-						String[] operatorSplit = belongingSeffParameter.split("\\.");
-
-						VariableUsage usage = ParameterFactory.eINSTANCE.createVariableUsage();
-						VariableCharacterisation character = ParameterFactory.eINSTANCE
-								.createVariableCharacterisation();
-						VariableReference reference = StoexFactory.eINSTANCE.createVariableReference();
-
-						reference.setReferenceName(operatorSplit[0]);
-						character.setType(VariableCharacterisationType.get(operatorSplit[1]));
-						character.setSpecification_VariableCharacterisation(
-								buildPCMVariable(operatorSplit[1], parameter.getValue()));
-						usage.setNamedReference__VariableUsage(reference);
-						usage.getVariableCharacterisation_VariableUsage().add(character);
-
-						entryCall.getInputParameterUsages_EntryLevelSystemCall().add(usage);
-					}
-				}
-			}
-
-			// chaining
-			current.setSuccessor(entryCall);
-			entryCall.setPredecessor(current);
-			build.getActions_ScenarioBehaviour().add(entryCall);
-
-			// update time
-			currentTime = call.getEntryTime();
-
-			// finish
-			current = entryCall;
-		}
-
-		// create stop
-		Stop stop = UsagemodelFactory.eINSTANCE.createStop();
-		// final chaining
-		stop.setPredecessor(current);
-		current.setPredecessor(stop);
-
-		build.getActions_ScenarioBehaviour().add(stop);
-
-		// finally
-		return build;
-	}
-
-	private PCMRandomVariable buildIntLiteral(int value) {
-		PCMRandomVariable ret = CoreFactory.eINSTANCE.createPCMRandomVariable();
-		ret.setSpecification(String.valueOf(value));
-		return ret;
-	}
-
-	private PCMRandomVariable buildPCMVariable(String key, Object value) {
-		PCMRandomVariable ret = CoreFactory.eINSTANCE.createPCMRandomVariable();
-
-		// TODO too static
-		if (key.equals("NUMBER_OF_ELEMENTS")) {
-			ret.setSpecification(String.valueOf(value));
-		}
-
-		return ret;
 	}
 
 	private void sortCalls() {
