@@ -1,6 +1,7 @@
 package tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.data;
 
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.ServiceCall;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.util.ServiceCallUtil;
 
 public class ServiceCallBundle {
 	private ServiceCall serviceCall;

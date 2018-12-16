@@ -2,6 +2,7 @@ package tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.palladiosimulator.pcm.core.CoreFactory;
 import org.palladiosimulator.pcm.core.PCMRandomVariable;
@@ -17,8 +18,21 @@ public class IntDistribution {
 	public PCMRandomVariable toStochasticExpression() {
 		if (distribution.size() == 1) {
 			return buildIntLiteral(distribution.entrySet().stream().findFirst().get().getKey());
+		} else {
+			long sum = distribution.entrySet().stream().mapToLong(l -> l.getValue()).sum();
+			StringBuilder builder = new StringBuilder();
+			builder.append("IntPMF[");
+			for (Entry<Integer, Long> entry : distribution.entrySet()) {
+				double prob = (double) entry.getValue() / (double) sum;
+				builder.append("(");
+				builder.append(String.valueOf(entry.getKey()));
+				builder.append(";");
+				builder.append(String.valueOf(roundDouble(prob, 3)));
+				builder.append(")");
+			}
+			builder.append("]");
+			return buildPCMVar(builder.toString());
 		}
-		return null;
 	}
 
 	public void push(int iterations) {
@@ -40,9 +54,18 @@ public class IntDistribution {
 	}
 
 	private PCMRandomVariable buildIntLiteral(int value) {
+		return buildPCMVar(String.valueOf(value));
+	}
+
+	private PCMRandomVariable buildPCMVar(String value) {
 		PCMRandomVariable ret = CoreFactory.eINSTANCE.createPCMRandomVariable();
-		ret.setSpecification(String.valueOf(value));
+		ret.setSpecification(value);
 		return ret;
+	}
+
+	private double roundDouble(double val, int chars) {
+		double factor = Math.pow(10, chars);
+		return Math.round(val * factor) / factor;
 	}
 
 }
