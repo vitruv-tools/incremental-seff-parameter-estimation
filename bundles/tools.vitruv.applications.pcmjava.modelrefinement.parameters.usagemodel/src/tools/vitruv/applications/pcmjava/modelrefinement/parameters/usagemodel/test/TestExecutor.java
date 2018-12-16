@@ -5,10 +5,10 @@ import org.palladiosimulator.pcm.repository.Repository;
 
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.MonitoringDataSet;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.impl.KiekerMonitoringReader;
-import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.CorrespondenceResult;
-import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.CorrespondenceTransformer;
-import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.KiekerLogTransformer;
-import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.ToolAdapterIObserve;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.iobserve.CorrespondenceResult;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.iobserve.CorrespondenceTransformer;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.iobserve.KiekerLogTransformer;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.iobserve.ToolAdapterIObserve;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.PcmUtils;
 
 public class TestExecutor {

@@ -105,9 +105,10 @@ public class ServiceCallDataSetImpl implements ServiceCallDataSet {
         private final ServiceParameters parameters;
         private final String serviceId;
         private final String serviceExecutionId;
+        private final String sessionId;
 
         public ServiceCallImpl(Optional<String> callerId, String callerServiceExecution, long entryTime, long exitTime,
-                ServiceParameters parameters, String serviceId, String serviceExecutionId) {
+                ServiceParameters parameters, String serviceId, String sessionId, String serviceExecutionId) {
             this.callerId = callerId;
             this.callerServiceExecutionId = callerServiceExecution;
             this.entryTime = entryTime;
@@ -115,6 +116,7 @@ public class ServiceCallDataSetImpl implements ServiceCallDataSet {
             this.parameters = parameters;
             this.serviceId = serviceId;
             this.serviceExecutionId = serviceExecutionId;
+            this.sessionId = sessionId;
         }
 
         @Override
@@ -165,6 +167,11 @@ public class ServiceCallDataSetImpl implements ServiceCallDataSet {
         @Override
         public double timeToSeconds(final long time) {
             return time * TIME_TO_SECONDS;
+        }
+
+        @Override
+        public String getSessionId() {
+            return this.sessionId;
         }
     }
 }

@@ -50,8 +50,8 @@ public class ExperimentBuilder {
 			this.experiment = ExperimentsFactory.eINSTANCE.createExperiment();
 			this.enclosing = enclosing;
 
-			this.experiment.setExperimentDesign(ExperimentsFactory.eINSTANCE.createFullFactorialDesign());
-			this.experiment.setResponseMeasurement(ExperimentsFactory.eINSTANCE.createProfilingMeasurement());
+			this.experiment.setExperimentDesign(ExperimentsFactory.eINSTANCE.createOneFactorAtATime());
+			this.experiment.setResponseMeasurement(ExperimentsFactory.eINSTANCE.createJMXMeasurement());
 
 			this.experiment.setInitialModel(ExperimentsFactory.eINSTANCE.createInitialModel());
 		}
