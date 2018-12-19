@@ -13,13 +13,16 @@ import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.d
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.data.usage.UsageCallStructure;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.data.usage.UsageLoopStructure;
 
+// TODO better structuring
 public class UsageSession {
 	private static final String CALLER_NOT_SET = "<not set>";
 
 	private List<ServiceCall> calls;
+	private long entryTime;
 
-	public UsageSession() {
+	public UsageSession(long entry) {
 		calls = new ArrayList<>();
+		entryTime = entry;
 	}
 
 	public void update(ServiceCall call) {
@@ -27,6 +30,10 @@ public class UsageSession {
 			// => ENTRY CALL
 			calls.add(call);
 		}
+	}
+
+	public long getEntryTime() {
+		return entryTime;
 	}
 
 	public List<AbstractUsageElement> compress() {
@@ -126,7 +133,7 @@ public class UsageSession {
 			int upcomingOccurences = 0;
 			if (nextOcc >= 0) {
 				int patternLength = nextOcc - k;
-				for (int z = k + patternLength; z < bundles.size(); z += patternLength) {
+				for (int z = k + patternLength; z < bundles.size() - (patternLength - 1); z += patternLength) {
 					final int kCopy = k;
 					final int zCopy = z;
 

@@ -2,6 +2,7 @@ package tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio.te
 
 import java.io.File;
 
+import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
@@ -11,6 +12,7 @@ import org.palladiosimulator.servicelevelobjective.ServiceLevelObjectiveReposito
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.PcmUtils;
 
 public class CocomeExample {
+
 	public static UsageModel usage = PcmUtils.loadUsageModel(new File("cocome/cocome.usagemodel").getAbsolutePath());
 	public static Allocation allocation = PcmUtils
 			.loadAllocationModel(new File("cocome/cocome.allocation").getAbsolutePath());
@@ -21,4 +23,6 @@ public class CocomeExample {
 			.readFromFile(new File("cocome/cocome.resourceenvironment").getAbsolutePath(), ResourceEnvironment.class);
 	public static ServiceLevelObjectiveRepository slo_repo = PcmUtils
 			.readFromFile(new File("cocome/cocome.slo").getAbsolutePath(), ServiceLevelObjectiveRepository.class);
+	public static MonitorRepository monitorrepo = PcmUtils
+			.readFromFile(new File("cocome/cocome.monitorrepository").getAbsolutePath(), MonitorRepository.class);
 }

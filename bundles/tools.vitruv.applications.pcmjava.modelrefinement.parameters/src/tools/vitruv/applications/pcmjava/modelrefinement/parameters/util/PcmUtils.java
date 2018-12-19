@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -17,11 +19,17 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.palladiosimulator.pcm.PcmPackage;
 import org.palladiosimulator.pcm.allocation.Allocation;
+import org.palladiosimulator.pcm.core.composition.ProvidedDelegationConnector;
+import org.palladiosimulator.pcm.core.entity.InterfaceProvidingEntity;
 import org.palladiosimulator.pcm.repository.OperationProvidedRole;
+import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
+import org.palladiosimulator.pcm.system.System;
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
+
+import de.uka.ipd.sdq.identifier.Identifier;
 
 /**
  * PCM specific utility functions.
@@ -162,21 +170,44 @@ public class PcmUtils {
 		}
 	}
 
-	public static ResourceDemandingSEFF resolveSEFF(Repository repo, String seffId) {
-		return getObjects(repo, ResourceDemandingSEFF.class).stream().filter(seff -> seff.getId().equals(seffId))
-				.findFirst().orElse(null);
+	public static ServiceEffectSpecification getSeffByProvidedRoleAndSignature(System system, OperationSignature sig,
+			OperationProvidedRole role) {
+		ProvidedDelegationConnector innerDelegator = getObjects(system, ProvidedDelegationConnector.class).stream()
+				.filter(del -> {
+					return del.getOuterProvidedRole_ProvidedDelegationConnector().getId().equals(role.getId());
+				}).findFirst().orElse(null);
+
+		if (innerDelegator != null) {
+			InterfaceProvidingEntity innerEntity = innerDelegator.getInnerProvidedRole_ProvidedDelegationConnector()
+					.getProvidingEntity_ProvidedRole();
+
+			return getObjects(innerEntity, ServiceEffectSpecification.class).stream()
+					.filter(seff -> seff.getDescribedService__SEFF().getId().equals(sig.getId())).findFirst()
+					.orElse(null);
+		}
+
+		return null;
 	}
 
-	public static OperationProvidedRole getProvidedRole(ServiceEffectSpecification seff) {
-		// the cast is safe because it can only be returned if its instance of (see
-		// inner lambda)
-		return (OperationProvidedRole) seff.getBasicComponent_ServiceEffectSpecification()
-				.getProvidedRoles_InterfaceProvidingEntity().stream().filter(prov -> {
-					if (prov instanceof OperationProvidedRole) {
-						return ((OperationProvidedRole) prov).getProvidedInterface__OperationProvidedRole()
-								.getSignatures__OperationInterface().contains(seff.getDescribedService__SEFF());
-					}
-					return false;
-				}).findFirst().orElse(null);
+	public static Set<OperationSignature> getProvidedOperations(System system) {
+		return getObjects(system, OperationProvidedRole.class).stream()
+				.map(role -> role.getProvidedInterface__OperationProvidedRole().getSignatures__OperationInterface())
+				.flatMap(list -> list.stream()).collect(Collectors.toSet());
+	}
+
+	public static ResourceDemandingSEFF resolveSEFF(Repository repo, String seffId) {
+		return getElementById(repo, ResourceDemandingSEFF.class, seffId);
+	}
+
+	public static <T extends Identifier> T getElementById(EObject obj, Class<T> clazz, String id) {
+		return getObjects(obj, clazz).stream().filter(t -> t.getId().equals(id)).findFirst().orElse(null);
+	}
+
+	public static OperationProvidedRole getProvidedRole(System sys, ServiceEffectSpecification seff) {
+		String seffSigId = seff.getDescribedService__SEFF().getId();
+		return getObjects(sys, OperationProvidedRole.class).stream().filter(role -> {
+			return role.getProvidedInterface__OperationProvidedRole().getSignatures__OperationInterface().stream()
+					.anyMatch(sig -> sig.getId().equals(seffSigId));
+		}).findFirst().orElse(null);
 	}
 }

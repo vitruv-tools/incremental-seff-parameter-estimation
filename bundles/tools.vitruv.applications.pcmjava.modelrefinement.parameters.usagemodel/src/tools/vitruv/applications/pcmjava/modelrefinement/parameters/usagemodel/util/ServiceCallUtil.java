@@ -42,6 +42,12 @@ public class ServiceCallUtil {
 		}
 	}
 
+	public static PCMRandomVariable buildLongLiteral(long value) {
+		PCMRandomVariable ret = CoreFactory.eINSTANCE.createPCMRandomVariable();
+		ret.setSpecification(String.valueOf(value));
+		return ret;
+	}
+
 	public static PCMRandomVariable buildIntLiteral(int value) {
 		PCMRandomVariable ret = CoreFactory.eINSTANCE.createPCMRandomVariable();
 		ret.setSpecification(String.valueOf(value));
