@@ -2,8 +2,10 @@ package tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import org.palladiosimulator.pcm.repository.Repository;
+import org.palladiosimulator.pcm.system.System;
 import org.palladiosimulator.pcm.usagemodel.AbstractUserAction;
 import org.palladiosimulator.pcm.usagemodel.Loop;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelFactory;
@@ -46,13 +48,25 @@ public class UsageLoopStructure extends AbstractUsageElement {
 	}
 
 	@Override
-	public AbstractUserAction toUserAction(Repository repo, MonitoringDataMapping mapping) {
+	public AbstractUserAction toUserAction(System sys, Repository repo, MonitoringDataMapping mapping) {
 		Loop loop = UsagemodelFactory.eINSTANCE.createLoop();
 		loop.setLoopIteration_Loop(iterations.toStochasticExpression());
 
-		UsageScenarioBehaviourBuilder innerBuilder = new UsageScenarioBehaviourBuilder(repo, mapping);
+		UsageScenarioBehaviourBuilder innerBuilder = new UsageScenarioBehaviourBuilder(sys, repo, mapping);
 		loop.setBodyBehaviour_Loop(innerBuilder.buildBehaviour(childs));
 
 		return loop;
+	}
+
+	@Override
+	public boolean matches(AbstractUsageElement b) {
+		if (b instanceof UsageLoopStructure) {
+			if (((UsageLoopStructure) b).childs.size() == childs.size()) {
+				return IntStream.range(0, childs.size()).allMatch(index -> {
+					return childs.get(index).matches(((UsageLoopStructure) b).childs.get(index));
+				});
+			}
+		}
+		return false;
 	}
 }

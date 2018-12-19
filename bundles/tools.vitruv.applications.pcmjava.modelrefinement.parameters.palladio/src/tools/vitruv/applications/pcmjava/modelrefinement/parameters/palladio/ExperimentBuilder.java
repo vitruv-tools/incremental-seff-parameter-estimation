@@ -10,6 +10,7 @@ import org.palladiosimulator.experimentautomation.application.tooladapter.simuli
 import org.palladiosimulator.experimentautomation.experiments.Experiment;
 import org.palladiosimulator.experimentautomation.experiments.ExperimentRepository;
 import org.palladiosimulator.experimentautomation.experiments.ExperimentsFactory;
+import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
@@ -50,8 +51,8 @@ public class ExperimentBuilder {
 			this.experiment = ExperimentsFactory.eINSTANCE.createExperiment();
 			this.enclosing = enclosing;
 
-			this.experiment.setExperimentDesign(ExperimentsFactory.eINSTANCE.createOneFactorAtATime());
-			this.experiment.setResponseMeasurement(ExperimentsFactory.eINSTANCE.createJMXMeasurement());
+			this.experiment.setExperimentDesign(ExperimentsFactory.eINSTANCE.createFullFactorialDesign());
+			this.experiment.setResponseMeasurement(ExperimentsFactory.eINSTANCE.createProfilingMeasurement());
 
 			this.experiment.setInitialModel(ExperimentsFactory.eINSTANCE.createInitialModel());
 		}
@@ -87,6 +88,11 @@ public class ExperimentBuilder {
 					.createMeasurementCountStopCondition();
 			cond.setMeasurementCount(measures);
 			this.experiment.getStopConditions().add(cond);
+			return this;
+		}
+
+		public BuilderExperiment monitorrepository(MonitorRepository mrepo) {
+			this.experiment.getInitialModel().setMonitorRepository(mrepo);
 			return this;
 		}
 

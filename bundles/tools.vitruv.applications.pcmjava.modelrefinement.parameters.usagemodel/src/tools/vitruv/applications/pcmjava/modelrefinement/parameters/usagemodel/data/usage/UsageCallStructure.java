@@ -10,6 +10,7 @@ import org.palladiosimulator.pcm.parameter.VariableUsage;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
+import org.palladiosimulator.pcm.system.System;
 import org.palladiosimulator.pcm.usagemodel.AbstractUserAction;
 import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelFactory;
@@ -37,14 +38,14 @@ public class UsageCallStructure extends AbstractUsageElement {
 	}
 
 	@Override
-	public AbstractUserAction toUserAction(Repository repo, MonitoringDataMapping mapping) {
+	public AbstractUserAction toUserAction(System sys, Repository repo, MonitoringDataMapping mapping) {
 		// get seff
 		ResourceDemandingSEFF seff = PcmUtils.resolveSEFF(repo, reference.getServiceId());
 
 		// build entry call
 		EntryLevelSystemCall entryCall = UsagemodelFactory.eINSTANCE.createEntryLevelSystemCall();
 		entryCall.setOperationSignature__EntryLevelSystemCall((OperationSignature) seff.getDescribedService__SEFF());
-		entryCall.setProvidedRole_EntryLevelSystemCall(PcmUtils.getProvidedRole(seff));
+		entryCall.setProvidedRole_EntryLevelSystemCall(PcmUtils.getProvidedRole(sys, seff));
 
 		// parameter build
 		if (reference.getParameters() != null) {
@@ -80,5 +81,15 @@ public class UsageCallStructure extends AbstractUsageElement {
 			return ServiceCallUtil.buildIntLiteral((int) value);
 		}
 		return null;
+	}
+
+	@Override
+	public boolean matches(AbstractUsageElement b) {
+		if (b == null)
+			return false;
+		if (b instanceof UsageCallStructure)
+			return reference.getServiceId().equals(((UsageCallStructure) b).reference.getServiceId());
+
+		return false;
 	}
 }
