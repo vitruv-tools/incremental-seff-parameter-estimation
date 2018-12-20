@@ -16,7 +16,7 @@ public class SeffParameterEstimationTest {
     @Test
     public void simple2EvaluationTest() throws Exception {
         MonitoringDataSet reader = new KiekerMonitoringReader("./test-data/simple2", "session-1");
-        Repository pcmModel = PcmUtils.loadModel("./test-data/simple2/default.repository");
+        Repository pcmModel = PcmUtils.readFromFile("./test-data/simple2/default.repository", Repository.class);
 
         SeffParameterEstimation estimation = new SeffParameterEstimation();
         estimation.update(pcmModel, reader);
@@ -31,7 +31,7 @@ public class SeffParameterEstimationTest {
     public void simpleEvaluationTest() throws Exception {
         MonitoringDataSet reader = SimpleTestData.getReader(SimpleTestData.FirstSessionId);
         Repository pcmModel = SimpleTestData.loadPcmModel();
-        
+
         List<ServiceCall> asd = reader.getServiceCalls().getServiceCalls("_XYJcUMjPEeiWRYm1yDC5rQ");
 
         SeffParameterEstimation estimation = new SeffParameterEstimation();

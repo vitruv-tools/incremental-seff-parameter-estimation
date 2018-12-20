@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.measure.unit.SI;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -18,6 +19,8 @@ import org.palladiosimulator.experimentautomation.application.tooladapter.simuli
 import org.palladiosimulator.experimentautomation.experiments.ExperimentRepository;
 import org.palladiosimulator.experimentautomation.experiments.ExperimentsPackage;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
+import org.palladiosimulator.pcm.core.composition.AssemblyContext;
+import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
 import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointPackage;
 
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio.ExperimentBuilder;
@@ -36,6 +39,8 @@ public class Test {
 
 	@org.junit.BeforeClass
 	public static void init() {
+		PcmUtils.loadPCMModels();
+
 		ExperimentsPackage.eINSTANCE.eClass();
 		SimucomtooladapterPackage.eINSTANCE.eClass();
 		SimulizartooladapterPackage.eINSTANCE.eClass();
@@ -61,7 +66,7 @@ public class Test {
 	@org.junit.Test
 	public void test2() throws IOException {
 		ExperimentRepository exec = ExperimentBuilder.create().experiment().desc("Cocome Execution").name("Cocome")
-				.reps(1).simucom(50).allocation(CocomeExample.allocation).usagemodel(CocomeExample.usage)
+				.reps(3).simucom(50).allocation(CocomeExample.allocation).usagemodel(CocomeExample.usage)
 				.monitorrepository(CocomeExample.monitorrepo).repository(CocomeExample.repo).system(CocomeExample.sys)
 				.env(CocomeExample.env).measurementtime(360000).slos(CocomeExample.slo_repo).finish().build();
 
@@ -69,9 +74,12 @@ public class Test {
 
 		PalladioAnalysisResults res = executor.run(exec);
 		for (Map.Entry<MeasuringPoint, MeasuringPointResults> ent : res.entries()) {
-			System.out.println(ent.getKey().getClass().getName());
-			PalladioAutomationUtil.getSeffByMeasuringPoint(CocomeExample.usage, CocomeExample.sys, ent.getKey(),
+			Pair<ServiceEffectSpecification, AssemblyContext> spec = PalladioAutomationUtil.getSeffByMeasuringPoint(
+					CocomeExample.repo, CocomeExample.usage, CocomeExample.sys, ent.getKey(),
 					ent.getValue().getMetricDescription());
+			if (spec == null) {
+				System.out.println(ent.getKey().getStringRepresentation());
+			}
 		}
 	}
 

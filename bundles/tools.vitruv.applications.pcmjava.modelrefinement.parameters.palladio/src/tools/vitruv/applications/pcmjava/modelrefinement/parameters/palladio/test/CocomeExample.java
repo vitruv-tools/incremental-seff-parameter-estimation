@@ -13,10 +13,12 @@ import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.PcmUtil
 
 public class CocomeExample {
 
-	public static UsageModel usage = PcmUtils.loadUsageModel(new File("cocome/cocome.usagemodel").getAbsolutePath());
-	public static Allocation allocation = PcmUtils
-			.loadAllocationModel(new File("cocome/cocome.allocation").getAbsolutePath());
-	public static Repository repo = PcmUtils.loadModel(new File("cocome/cocome.repository").getAbsolutePath());
+	public static UsageModel usage = PcmUtils.readFromFile(new File("cocome/cocome.usagemodel").getAbsolutePath(),
+			UsageModel.class);
+	public static Allocation allocation = PcmUtils.readFromFile(new File("cocome/cocome.allocation").getAbsolutePath(),
+			Allocation.class);
+	public static Repository repo = PcmUtils.readFromFile(new File("cocome/cocome.repository").getAbsolutePath(),
+			Repository.class);
 	public static org.palladiosimulator.pcm.system.System sys = PcmUtils.readFromFile(
 			new File("cocome/cocome.system").getAbsolutePath(), org.palladiosimulator.pcm.system.System.class);
 	public static ResourceEnvironment env = PcmUtils

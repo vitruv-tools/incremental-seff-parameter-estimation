@@ -46,10 +46,10 @@ public class SimpleTestData {
     }
 
     public static Repository loadIterationPcmModel() {
-        return PcmUtils.loadModel("./test-data/simple-iteration/default2.repository");
+        return PcmUtils.readFromFile("./test-data/simple-iteration/default2.repository", Repository.class);
     }
 
     public static Repository loadPcmModel() {
-        return PcmUtils.loadModel("./test-data/simple/default.repository");
+        return PcmUtils.readFromFile("./test-data/simple/default.repository", Repository.class);
     }
 }
