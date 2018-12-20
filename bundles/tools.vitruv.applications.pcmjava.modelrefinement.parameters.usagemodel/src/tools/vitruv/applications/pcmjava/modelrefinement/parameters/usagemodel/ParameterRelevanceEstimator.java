@@ -24,8 +24,9 @@ import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.PcmUtil
 
 public class ParameterRelevanceEstimator {
 
-	public Set<Parameter> getRelevantParameters(ResourceDemandingSEFF seff) {
-		return estimateDependencies(seff).stream().map(pair -> pair.getLeft()).collect(Collectors.toSet());
+	public Set<Parameter> getRelevantParameters(ResourceDemandingSEFF seff, float thres) {
+		return estimateDependencies(seff).stream().filter(pair -> pair.getRight() >= thres).map(pair -> pair.getLeft())
+				.collect(Collectors.toSet());
 	}
 
 	public List<Pair<Parameter, Float>> estimateDependencies(ResourceDemandingSEFF seff) {

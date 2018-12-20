@@ -1,5 +1,6 @@
 package tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.test;
 
+import java.io.File;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
@@ -14,13 +15,17 @@ public class ParameterReferenceEstimatorTest {
 
 	@Test
 	public void test() {
-		Repository pcmModel = PcmUtils.loadModel("cocome/cocome.repository");
-		UsageModel usage = PcmUtils.readFromFile("cocome/cocome.usagemodel", UsageModel.class);
+		PcmUtils.loadPCMModels();
 
-		ResourceDemandingSEFF seff = PcmUtils.resolveSEFF(pcmModel, "bookSale");
+		Repository pcmModel = PcmUtils.readFromFile(new File("cocome/cocome.repository").getAbsolutePath(),
+				Repository.class);
+		UsageModel usage = PcmUtils.readFromFile(new File("cocome/cocome.usagemodel").getAbsolutePath(),
+				UsageModel.class);
+
+		ResourceDemandingSEFF seff = PcmUtils.getElementById(pcmModel, ResourceDemandingSEFF.class, "bookSale");
 
 		ParameterRelevanceEstimator relEst = new ParameterRelevanceEstimator();
-		System.out.println(relEst.getRelevantParameters(seff).stream().map(para -> para.getParameterName())
+		System.out.println(relEst.getRelevantParameters(seff, 0.05f).stream().map(para -> para.getParameterName())
 				.collect(Collectors.toList()));
 	}
 

@@ -20,7 +20,10 @@ public class UsageModelExtractorTest {
 
 	@Test
 	public void test() {
-		Repository pcmModel = PcmUtils.loadModel(new File("cocome/cocome.repository").getAbsolutePath());
+		PcmUtils.loadPCMModels();
+
+		Repository pcmModel = PcmUtils.readFromFile(new File("cocome/cocome.repository").getAbsolutePath(),
+				Repository.class);
 		System pcmSystem = PcmUtils.readFromFile(new File("cocome/cocome.system").getAbsolutePath(), System.class);
 		UsageModel usage = PcmUtils.readFromFile(new File("cocome/cocome.usagemodel").getAbsolutePath(),
 				UsageModel.class);

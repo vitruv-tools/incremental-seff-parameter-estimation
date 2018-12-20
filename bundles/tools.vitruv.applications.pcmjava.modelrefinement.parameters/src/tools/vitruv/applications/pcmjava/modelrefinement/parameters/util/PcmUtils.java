@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -18,16 +19,15 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.palladiosimulator.pcm.PcmPackage;
-import org.palladiosimulator.pcm.allocation.Allocation;
+import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.core.composition.ProvidedDelegationConnector;
 import org.palladiosimulator.pcm.core.entity.InterfaceProvidingEntity;
 import org.palladiosimulator.pcm.repository.OperationProvidedRole;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.repository.Repository;
-import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
+import org.palladiosimulator.pcm.repository.RepositoryPackage;
 import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
 import org.palladiosimulator.pcm.system.System;
-import org.palladiosimulator.pcm.usagemodel.UsageModel;
 
 import de.uka.ipd.sdq.identifier.Identifier;
 
@@ -35,6 +35,7 @@ import de.uka.ipd.sdq.identifier.Identifier;
  * PCM specific utility functions.
  * 
  * @author JP
+ * @author David Monschein
  *
  */
 public class PcmUtils {
@@ -61,53 +62,6 @@ public class PcmUtils {
 			}
 		}
 		return results;
-	}
-
-	/**
-	 * Loads a {@link Repository} form a file.
-	 * 
-	 * @param filePath
-	 *            The repository file.
-	 * @return The loaded repository.
-	 */
-	public static Repository loadModel(final String filePath) {
-		// Initialize package.
-		PcmPackage.eINSTANCE.eClass();
-
-		ResourceSet resourceSet = new ResourceSetImpl();
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-				.put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
-
-		URI filePathUri = org.eclipse.emf.common.util.URI.createFileURI(filePath);
-
-		Resource resource = resourceSet.getResource(filePathUri, true);
-		return (Repository) resource.getContents().get(0);
-	}
-
-	public static UsageModel loadUsageModel(final String filePath) {
-		PcmPackage.eINSTANCE.eClass();
-
-		ResourceSet resourceSet = new ResourceSetImpl();
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-				.put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
-
-		URI filePathUri = org.eclipse.emf.common.util.URI.createFileURI(filePath);
-
-		Resource resource = resourceSet.getResource(filePathUri, true);
-		return (UsageModel) resource.getContents().get(0);
-	}
-
-	public static Allocation loadAllocationModel(final String filePath) {
-		PcmPackage.eINSTANCE.eClass();
-
-		ResourceSet resourceSet = new ResourceSetImpl();
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-				.put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
-
-		URI filePathUri = org.eclipse.emf.common.util.URI.createFileURI(filePath);
-
-		Resource resource = resourceSet.getResource(filePathUri, true);
-		return (Allocation) resource.getContents().get(0);
 	}
 
 	/**
@@ -140,6 +94,15 @@ public class PcmUtils {
 		}
 	}
 
+	/**
+	 * Reads a Model from file with a given class
+	 * 
+	 * @param path
+	 *            file path
+	 * @param clazz
+	 *            model type class
+	 * @return parsed model
+	 */
 	public static <T> T readFromFile(String path, Class<T> clazz) {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
@@ -151,6 +114,14 @@ public class PcmUtils {
 		return clazz.cast(resource.getContents().get(0));
 	}
 
+	/**
+	 * Saves a model to file
+	 * 
+	 * @param model
+	 *            model to save
+	 * @param path
+	 *            path for the file
+	 */
 	public static <T extends EObject> void saveToFile(T model, String path) {
 		URI writeModelURI = URI.createFileURI(path);
 
@@ -170,8 +141,20 @@ public class PcmUtils {
 		}
 	}
 
-	public static ServiceEffectSpecification getSeffByProvidedRoleAndSignature(System system, OperationSignature sig,
-			OperationProvidedRole role) {
+	/**
+	 * Resolves a SEFF with given System, Signature and Provided Role Searches the
+	 * delegation and resolves the assembly to which the role is delegated
+	 * 
+	 * @param system
+	 *            system link
+	 * @param sig
+	 *            signature
+	 * @param role
+	 *            provided role
+	 * @return pair (left = SEFF, right = providing assembly)
+	 */
+	public static Pair<ServiceEffectSpecification, AssemblyContext> getSeffByProvidedRoleAndSignature(System system,
+			OperationSignature sig, OperationProvidedRole role) {
 		ProvidedDelegationConnector innerDelegator = getObjects(system, ProvidedDelegationConnector.class).stream()
 				.filter(del -> {
 					return del.getOuterProvidedRole_ProvidedDelegationConnector().getId().equals(role.getId());
@@ -181,33 +164,63 @@ public class PcmUtils {
 			InterfaceProvidingEntity innerEntity = innerDelegator.getInnerProvidedRole_ProvidedDelegationConnector()
 					.getProvidingEntity_ProvidedRole();
 
-			return getObjects(innerEntity, ServiceEffectSpecification.class).stream()
+			return Pair.of(getObjects(innerEntity, ServiceEffectSpecification.class).stream()
 					.filter(seff -> seff.getDescribedService__SEFF().getId().equals(sig.getId())).findFirst()
-					.orElse(null);
+					.orElse(null), innerDelegator.getAssemblyContext_ProvidedDelegationConnector());
 		}
 
 		return null;
 	}
 
+	/**
+	 * Gets all provided operations by a system.
+	 * 
+	 * @param system
+	 *            the system
+	 * @return set of all provided operations by the passed system
+	 */
 	public static Set<OperationSignature> getProvidedOperations(System system) {
 		return getObjects(system, OperationProvidedRole.class).stream()
 				.map(role -> role.getProvidedInterface__OperationProvidedRole().getSignatures__OperationInterface())
 				.flatMap(list -> list.stream()).collect(Collectors.toSet());
 	}
 
-	public static ResourceDemandingSEFF resolveSEFF(Repository repo, String seffId) {
-		return getElementById(repo, ResourceDemandingSEFF.class, seffId);
-	}
-
+	/**
+	 * Gets an element with a given ID.
+	 * 
+	 * @param obj
+	 *            the object which child's should be examined
+	 * @param clazz
+	 *            type of the element
+	 * @param id
+	 *            id of the element
+	 * @return found element or null if it could not be found
+	 */
 	public static <T extends Identifier> T getElementById(EObject obj, Class<T> clazz, String id) {
 		return getObjects(obj, clazz).stream().filter(t -> t.getId().equals(id)).findFirst().orElse(null);
 	}
 
+	/**
+	 * Gets the provided role of a system which contains a given SEFF
+	 * 
+	 * @param sys
+	 *            system
+	 * @param seff
+	 *            SEFF
+	 * @return provided role which contains the SEFF or null if not available
+	 */
 	public static OperationProvidedRole getProvidedRole(System sys, ServiceEffectSpecification seff) {
 		String seffSigId = seff.getDescribedService__SEFF().getId();
 		return getObjects(sys, OperationProvidedRole.class).stream().filter(role -> {
 			return role.getProvidedInterface__OperationProvidedRole().getSignatures__OperationInterface().stream()
 					.anyMatch(sig -> sig.getId().equals(seffSigId));
 		}).findFirst().orElse(null);
+	}
+
+	/**
+	 * Visits all common PCM package classes to load them.
+	 */
+	public static void loadPCMModels() {
+		RepositoryPackage.eINSTANCE.eClass();
 	}
 }

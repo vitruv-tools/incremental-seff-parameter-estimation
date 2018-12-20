@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.palladiosimulator.pcm.repository.Repository;
+import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
 import org.palladiosimulator.pcm.system.System;
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
@@ -65,7 +66,8 @@ public class UsageModelExtractor {
 	}
 
 	private boolean isSystemEntryCall(Set<String> sigs, ServiceCall call) {
-		ServiceEffectSpecification spec = PcmUtils.resolveSEFF(repository, call.getServiceId());
+		ServiceEffectSpecification spec = PcmUtils.getElementById(repository, ResourceDemandingSEFF.class,
+				call.getServiceId());
 		if (spec != null) {
 			return sigs.contains(spec.getDescribedService__SEFF().getId());
 		}

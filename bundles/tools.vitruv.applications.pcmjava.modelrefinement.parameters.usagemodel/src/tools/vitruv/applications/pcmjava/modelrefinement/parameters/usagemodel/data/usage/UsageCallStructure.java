@@ -40,7 +40,8 @@ public class UsageCallStructure extends AbstractUsageElement {
 	@Override
 	public AbstractUserAction toUserAction(System sys, Repository repo, MonitoringDataMapping mapping) {
 		// get seff
-		ResourceDemandingSEFF seff = PcmUtils.resolveSEFF(repo, reference.getServiceId());
+		ResourceDemandingSEFF seff = PcmUtils.getElementById(repo, ResourceDemandingSEFF.class,
+				reference.getServiceId());
 
 		// build entry call
 		EntryLevelSystemCall entryCall = UsagemodelFactory.eINSTANCE.createEntryLevelSystemCall();

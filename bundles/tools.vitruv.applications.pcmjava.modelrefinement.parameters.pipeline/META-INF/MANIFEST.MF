@@ -5,3 +5,9 @@ Bundle-SymbolicName: tools.vitruv.applications.pcmjava.modelrefinement.parameter
 Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: tools.vitruv.applications.pcmjava.modelrefinement.parameters;bundle-version="1.0.0",
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters.load;bundle-version="1.0.0",
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring;bundle-version="1.0.0",
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring.adapter;bundle-version="1.0.0",
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio;bundle-version="1.0.0",
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel;bundle-version="1.0.0"
