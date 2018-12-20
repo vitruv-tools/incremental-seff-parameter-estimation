@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 import java.util.SortedMap;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.palladiosimulator.pcm.repository.Repository;
 
@@ -20,7 +21,7 @@ import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.PcmUtil
 public class SeffParameterEstimationTest {
 
     public static KiekerMonitoringReader getReader(Common c) {
-        return new KiekerMonitoringReader(Common.DataRootPath + "kieker/");
+        return new KiekerMonitoringReader(Common.ResultsPath + "kieker/", c.getSessionId());
     }
 
     public static Repository loadPcmModel(Common c) {
@@ -28,33 +29,20 @@ public class SeffParameterEstimationTest {
     }
 
     public static void savePcmModel(Common c, Repository repository) {
-        PcmUtils.saveModel(Common.DataRootPath + "/results/" + c.logMode + "/result.repository", repository);
+        PcmUtils.saveModel(Common.DataRootPath + "results/" + c.logMode + "/result.repository", repository);
     }
 
-    public static final String CurrentEvaluationData = Common.EvaluationData.Default;
-
-    private static void storeUtilization(Common c, MonitoringDataSet monitoringData)
-            throws IOException {
-        Long earliest = monitoringData.getResponseTimes().getEarliestEntry();
-        Long last = monitoringData.getResponseTimes().getLatestEntry();
-
-        String resourceId = monitoringData.getResourceUtilizations().getResourceIds().iterator().next();
-        SortedMap<Long, Double> utilization = monitoringData.getResourceUtilizations().getUtilization(resourceId);
-
-        CsvWriter csv2 = new CsvWriter(c.getUtilizationResultPath() + "utilization.csv", "time", "utilization");
-
-        for (Entry<Long, Double> utilizationEntry : utilization.subMap(earliest, last).entrySet()) {
-            csv2.write(monitoringData.getResourceUtilizations().timeToSeconds(utilizationEntry.getKey()),
-                    utilizationEntry.getValue());
-        }
-        csv2.close();
-    }
+    @BeforeClass
+    public static void setUp() {
+        LoggingUtil.InitConsoleLogger();
+    }    
     
     @Test
     public void evaluation() throws Exception {
-        evaluationStep(Common.EvaluationData.Default);
-        evaluationStep(Common.EvaluationData.Threaded);
         evaluationStep(Common.EvaluationData.Threaded2);
+        //evaluationStep(Common.EvaluationData.Default);
+        //evaluationStep(Common.EvaluationData.Threaded);
+        //evaluationStep(Common.EvaluationData.Threaded2);
     }
 
     public static void evaluationStep(String name) throws Exception {
@@ -71,7 +59,7 @@ public class SeffParameterEstimationTest {
 
         savePcmModel(c, pcmModelIteration0);
         storeUtilization(c, readerIteration0);
-
+        
         // iteration 1
         c = new Common(Mode.Iteration1, Mode.Iteration1, name);
         MonitoringDataSet readerIteration1 = getReader(c);
@@ -81,7 +69,7 @@ public class SeffParameterEstimationTest {
 
         savePcmModel(c, pcmModelIteration1);
         storeUtilization(c, readerIteration1);
-
+        
         // complete
         c = new Common(Mode.Complete, Mode.Iteration1, name);
         SeffParameterEstimation estimationComplete = new SeffParameterEstimation();
@@ -95,7 +83,6 @@ public class SeffParameterEstimationTest {
         storeUtilization(c, readerComplete);
     }
 
-    @Test
     public void compareMonitoringRecordsCount(String name) throws Exception {
         Common d;
         
@@ -110,6 +97,23 @@ public class SeffParameterEstimationTest {
 
         System.out.println("a " + String.valueOf(a) + " b " + String.valueOf(b) + " c " + String.valueOf(c));
 
+    }
+    
+    private static void storeUtilization(Common c, MonitoringDataSet monitoringData)
+            throws IOException {
+        Long earliest = monitoringData.getResponseTimes().getEarliestEntry();
+        Long last = monitoringData.getResponseTimes().getLatestEntry();
+
+        String resourceId = monitoringData.getResourceUtilizations().getResourceIds().iterator().next();
+        SortedMap<Long, Double> utilization = monitoringData.getResourceUtilizations().getUtilization(resourceId);
+
+        CsvWriter csv2 = new CsvWriter(c.getUtilizationResultPath() + "utilization.csv", "time", "utilization");
+
+        for (Entry<Long, Double> utilizationEntry : utilization.subMap(earliest, last).entrySet()) {
+            csv2.write(monitoringData.getResourceUtilizations().timeToSeconds(utilizationEntry.getKey()),
+                    utilizationEntry.getValue());
+        }
+        csv2.close();
     }
 
     private static int getMonitoringRecordsCount(MonitoringDataSet dataSet) {
@@ -130,10 +134,5 @@ public class SeffParameterEstimationTest {
 
         count += dataSet.getServiceCalls().getServiceCalls().size();
         return count;
-    }
-
-    @BeforeClass
-    public static void setUp() {
-        LoggingUtil.InitConsoleLogger();
     }
 }

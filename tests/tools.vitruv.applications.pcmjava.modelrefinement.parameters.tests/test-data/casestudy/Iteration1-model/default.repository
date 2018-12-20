@@ -23,7 +23,7 @@
                 <steps_Behaviour xsi:type="seff:StopAction" id="_lRzHks4QEeighsjAklj9Fg" predecessor_AbstractAction="_P1p-cMjTEeiWRYm1yDC5rQ"/>
                 <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_P1p-cMjTEeiWRYm1yDC5rQ" predecessor_AbstractAction="_lRzHkc4QEeighsjAklj9Fg" successor_AbstractAction="_lRzHks4QEeighsjAklj9Fg" calledService_ExternalService="_6VC5gMjOEeiWRYm1yDC5rQ" role_ExternalService="_3pfSMMjOEeiWRYm1yDC5rQ"/>
               </branchBehaviour_BranchTransition>
-              <branchCondition_GuardedBranchTransition/>
+              <branchCondition_GuardedBranchTransition specification="(a.VALUE &lt;= 5.0 ? false : (a.VALUE > 5.0 ? true : false ))"/>
             </branches_Branch>
           </steps_Behaviour>
           <steps_Behaviour xsi:type="seff:InternalAction" id="_dhstIMjSEeiWRYm1yDC5rQ" entityName="A.methodA-internal-1" predecessor_AbstractAction="_SSx9oMjSEeiWRYm1yDC5rQ" successor_AbstractAction="_VTWLoMjSEeiWRYm1yDC5rQ">
@@ -42,7 +42,7 @@
             <steps_Behaviour xsi:type="seff:StopAction" id="_BQQWgs4REeighsjAklj9Fg" predecessor_AbstractAction="_Sd2WYMwNEeiWXYGpzxFH0A"/>
             <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_Sd2WYMwNEeiWXYGpzxFH0A" predecessor_AbstractAction="_BQQWgc4REeighsjAklj9Fg" successor_AbstractAction="_BQQWgs4REeighsjAklj9Fg" calledService_ExternalService="_t-NwkMwMEeiWXYGpzxFH0A" role_ExternalService="_3pfSMMjOEeiWRYm1yDC5rQ"/>
           </branchBehaviour_BranchTransition>
-          <branchCondition_GuardedBranchTransition/>
+          <branchCondition_GuardedBranchTransition specification="(a.VALUE &lt;= 6.0 ? true : (a.VALUE > 6.0 ? false : true ))"/>
         </branches_Branch>
       </steps_Behaviour>
     </serviceEffectSpecifications__BasicComponent>

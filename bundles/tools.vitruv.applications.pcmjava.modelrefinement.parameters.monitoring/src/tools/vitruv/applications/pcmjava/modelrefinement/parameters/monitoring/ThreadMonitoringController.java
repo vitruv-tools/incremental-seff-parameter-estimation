@@ -22,9 +22,7 @@ public class ThreadMonitoringController {
 
     private static final int INITIAL_SERVICE_DEPTH_COUNT = 10;
 
-    private static final IMonitoringController MONITORING_CONTROLLER = MonitoringController.getInstance();
-
-    private static final ITimeSource TIME_SOURCE = MONITORING_CONTROLLER.getTimeSource();
+    private static ITimeSource TIME_SOURCE = MonitoringController.getInstance().getTimeSource();
 
     private static final ThreadLocal<ThreadMonitoringController> CONTROLLER = ThreadLocal.withInitial(
             () -> new ThreadMonitoringController(Thread.currentThread().getId(), INITIAL_SERVICE_DEPTH_COUNT));
@@ -32,6 +30,13 @@ public class ThreadMonitoringController {
     private static volatile String sessionId;
 
     private final long threadId;
+
+    private static MonitoringRecordsWriter RECORDS_WRITER = new KiekerMonitoringRecordsWriter(
+            MonitoringController.getInstance());
+
+    public static void setMonitoringRecordsWriter(MonitoringRecordsWriter writer) {
+        RECORDS_WRITER = writer;
+    }
 
     /**
      * Stack and cache of service monitoring controllers. Already initialized controllers are reused.
@@ -239,7 +244,7 @@ public class ThreadMonitoringController {
                     this.serviceStartTime,
                     stopTime);
 
-            MONITORING_CONTROLLER.newMonitoringRecord(e);
+            RECORDS_WRITER.write(e);
         }
 
         public String getCurrentCallerId() {
@@ -257,7 +262,7 @@ public class ThreadMonitoringController {
                     branchId,
                     executedBranchId);
 
-            MONITORING_CONTROLLER.newMonitoringRecord(record);
+            RECORDS_WRITER.write(record);
         }
 
         public void logLoopIterationCount(final String loopId, final long loopIterationCount) {
@@ -267,7 +272,7 @@ public class ThreadMonitoringController {
                     loopId,
                     loopIterationCount);
 
-            MONITORING_CONTROLLER.newMonitoringRecord(record);
+            RECORDS_WRITER.write(record);
         }
 
         public void logResponseTime(final String internalActionId, final String resourceId, final long startTime) {
@@ -281,7 +286,7 @@ public class ThreadMonitoringController {
                     startTime,
                     currentTime);
 
-            MONITORING_CONTROLLER.newMonitoringRecord(record);
+            RECORDS_WRITER.write(record);
         }
 
         public void setCurrentCallerId(final String currentCallerId) {

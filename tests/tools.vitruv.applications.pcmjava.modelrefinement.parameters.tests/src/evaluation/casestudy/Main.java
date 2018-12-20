@@ -12,6 +12,8 @@ import kieker.monitoring.core.controller.MonitoringController;
 import kieker.monitoring.sampler.sigar.ISigarSamplerFactory;
 import kieker.monitoring.sampler.sigar.SigarSamplerFactory;
 import kieker.monitoring.sampler.sigar.samplers.CPUsDetailedPercSampler;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring.KiekerMonitoringRecordsWriter;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring.MonitoringRecordsCache;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring.ThreadMonitoringController;
 
 public class Main {
@@ -20,13 +22,24 @@ public class Main {
 
     final static CPUsDetailedPercSampler cpuSampler = sigarFactory.createSensorCPUsDetailedPerc();
 
+    private static MonitoringRecordsCache cache;
+    private static int CACHE_SIZE = 100000;
+    
     public static void main(final String[] args) throws Exception {
 
-        MonitoringController.getInstance().schedulePeriodicSampler(
-                cpuSampler, 0, 1, TimeUnit.SECONDS);
+        System.out.println("Starting now.");
+        System.out.flush();
+        MonitoringController.getInstance().schedulePeriodicSampler(cpuSampler, 0, 1, TimeUnit.SECONDS);
 
         System.out.println("Set processor affinity to CPU 0 and press enter.");
         System.in.read();
+        
+        KiekerMonitoringRecordsWriter writer = 
+                new KiekerMonitoringRecordsWriter(MonitoringController.getInstance());
+        
+        cache = new MonitoringRecordsCache(CACHE_SIZE, writer);
+        
+        ThreadMonitoringController.setMonitoringRecordsWriter(writer);
 
         // evaluation 1 (in thesis)
         evaluationEstimationRun(500, 0, 1, Common.EvaluationData.Default);
@@ -60,6 +73,14 @@ public class Main {
         ThreadMonitoringController.setSessionId(c.getSessionId());
 
         evaluationThreadedRun(c, iterations, thinkTimeMillis, population);
+        
+        if (cache.getItemsCount() > CACHE_SIZE) {
+            System.err.println(String.format("The cache exeeded the initial size. Items in cache was: %d.", cache.getItemsCount()));
+        }
+        
+        cache.flushCache();
+        System.out.flush();
+        System.err.flush();
     }
 
     private static void evaluationThreadedRun(Common c, int iterations, int thinkTimeMillis, int population) throws Exception {

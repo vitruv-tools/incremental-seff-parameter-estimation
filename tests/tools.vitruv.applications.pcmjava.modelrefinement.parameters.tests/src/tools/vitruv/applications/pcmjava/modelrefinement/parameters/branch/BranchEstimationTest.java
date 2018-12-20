@@ -24,6 +24,7 @@ import tools.vitruv.applications.pcmjava.modelrefinement.parameters.LoggingUtil;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.MonitoringDataSet;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.ServiceParametersUtil;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.branch.impl.BranchEstimationImpl;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.branch.impl.WekaBranchModel;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.data.SimpleTestData;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.dataset.Common;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.dataset.MockMonitoringDataSet;
@@ -77,13 +78,14 @@ public class BranchEstimationTest {
         this.addBranchNotExecuted(1.0);
         this.addBranchNotExecuted(2.0);
         this.addBranchNotExecuted(3.0);
+        
         this.addBranchExecuted(4.0);
         this.addBranchExecuted(5.0);
         this.addBranchExecuted(6.0);
 
         this.branchEstimation.update(this.repository, this.dataSet.getServiceCalls(), this.dataSet.getBranches());
 
-        assertEquals("", this.branchEstimation.get(Common.DEFAULT_MODEL_ID));
+        assertEquals("", this.branchEstimation.get(Common.DEFAULT_MODEL_ID).get().getBranchStochasticExpression(Common.MODEL_ID_1));
         
         assertFalse(predictBranch(-10.0).isPresent());
         assertFalse(predictBranch(0.0).isPresent());
@@ -94,8 +96,34 @@ public class BranchEstimationTest {
         assertTrue(predictBranch(5.0).isPresent());
         assertTrue(predictBranch(10.0).isPresent());
         assertTrue(predictBranch(10.0).isPresent());
+    }
+    
+    @Test
+    public void lessThanBranchTest() throws Exception {
+        this.addBranchExecuted(1.0);
+        this.addBranchExecuted(2.0);
+        this.addBranchExecuted(3.0);
+        
+        this.addBranchNotExecuted(4.0);
+        this.addBranchNotExecuted(5.0);
+        this.addBranchNotExecuted(6.0);
 
-        assertEquals("", this.branchEstimation.get(Common.DEFAULT_MODEL_ID));
+        this.branchEstimation.update(this.repository, this.dataSet.getServiceCalls(), this.dataSet.getBranches());
+
+        WekaBranchModel branchModel = (WekaBranchModel) this.branchEstimation.get(Common.DEFAULT_MODEL_ID).get();
+        String branchModelGraph = branchModel.getClassifier().graph();
+        
+        assertTrue(predictBranch(-10.0).isPresent());
+        assertTrue(predictBranch(0.0).isPresent());
+        assertTrue(predictBranch(1.0).isPresent());
+        assertTrue(predictBranch(3.0).isPresent());
+
+        assertFalse(predictBranch(4.0).isPresent());
+        assertFalse(predictBranch(5.0).isPresent());
+        assertFalse(predictBranch(10.0).isPresent());
+        assertFalse(predictBranch(10.0).isPresent());
+        
+        assertEquals("(a <= 3.0 ? true : (a > 3.0 ? false : true ))", branchModel.getBranchStochasticExpression(Common.MODEL_ID_1));
     }
 
     private Optional<AbstractBranchTransition> predictBranch(Object value) {

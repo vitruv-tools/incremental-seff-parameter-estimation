@@ -61,7 +61,7 @@
     <styles xmi:type="notation:FontStyle" xmi:id="_f6Up0uOLEeiRhPWGEU1Wpw" fontName="Segoe UI"/>
     <styles xmi:type="notation:FillStyle" xmi:id="_f6Up0-OLEeiRhPWGEU1Wpw"/>
     <element xmi:type="usagemodel:UsageScenario" href="default.usagemodel#_f1-VUOOLEeiRhPWGEU1Wpw"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_f6Up1OOLEeiRhPWGEU1Wpw" width="631" height="416"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_f6Up1OOLEeiRhPWGEU1Wpw" width="631" height="553"/>
   </children>
   <styles xmi:type="notation:DiagramStyle" xmi:id="_f2OM8eOLEeiRhPWGEU1Wpw"/>
   <element xmi:type="usagemodel:UsageModel" href="default.usagemodel#/"/>

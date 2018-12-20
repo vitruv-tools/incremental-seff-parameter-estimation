@@ -46,29 +46,19 @@ public class WekaBranchModel implements BranchModel {
     @Override
     public Optional<String> predictBranchId(final ServiceCall serviceCall) {
         Instance parametersInstance = this.dataset.buildTestInstance(serviceCall.getParameters());
+        
+        // To mitigate weka.core.UnassignedDatasetException: Instance doesn't have access to a dataset!
         Instances dataset = this.dataset.getDataSet();
-        dataset.add(parametersInstance);
-        double[] branchDistribution;
+        parametersInstance.setDataset(dataset);
+        
+        double selectedBranch;
         try {
-            branchDistribution = this.classifier.distributionForInstance(dataset.firstInstance());
+            selectedBranch = this.classifier.classifyInstance(parametersInstance);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        double selectedBranchPropability = this.random.nextDouble();
-        int selectedBranchIndex = 0;
-        double branchPropabilitySum = 0.0;
-        while (true) {
-            if (selectedBranchIndex >= branchDistribution.length) {
-                throw new IllegalArgumentException("The branch has propability distribution.");
-            }
-            branchPropabilitySum += branchDistribution[selectedBranchIndex];
-            if (selectedBranchPropability < branchPropabilitySum) {
-                break;
-            }
-            selectedBranchIndex++;
-        }
-
-        String result = this.dataset.getClassAttribute().value(selectedBranchIndex);
+        
+        String result = this.dataset.getClassAttribute().value((int)selectedBranch);
 
         if (result.equals(this.branchNotExecutedId)) {
             return Optional.empty();
@@ -94,8 +84,7 @@ public class WekaBranchModel implements BranchModel {
         }
 
         private void buildStochasticExpression(final ClassifierTree tree, final int classId,
-                final String[] attributeExpression,
-                final StringBuilder result2) {
+                final String[] attributeExpression, final StringBuilder result2) {
 
             // "BoolPMF[(true;p)(false;q)]"
 
@@ -139,13 +128,12 @@ public class WekaBranchModel implements BranchModel {
         }
 
         private String toSourceExpression(final C45Split splitModel, final int index,
-                final String[] attributeExpression,
-                final Instances data) {
+                final String[] attributeExpression, final Instances data) {
             StringBuffer expr = new StringBuffer();
             expr.append(attributeExpression[splitModel.attIndex()]);
 
             if (data.attribute(splitModel.attIndex()).isNominal()) {
-                expr.append(" == ").append(data.attribute(splitModel.attIndex()).value(index)).append("\")");
+                expr.append(" == \"").append(data.attribute(splitModel.attIndex()).value(index)).append("\"");
             } else {
                 if (index == 0) {
                     expr.append(" <= ").append(splitModel.splitPoint());
@@ -157,8 +145,7 @@ public class WekaBranchModel implements BranchModel {
         }
 
         private String toSourceExpression(final ClassifierSplitModel splitModel, final int index,
-                final String[] attributeExpression,
-                final Instances data) {
+                final String[] attributeExpression, final Instances data) {
             if (splitModel instanceof NoSplit) {
                 return "true";
             } else if (splitModel instanceof C45Split) {

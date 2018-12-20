@@ -223,9 +223,9 @@
       <mappings entity="//@workloadDescription/@services.18"/>
     </observations>
   </input>
-  <estimation window="30">
+  <estimation window="10">
     <approaches type="tools.descartes.librede.approach.ServiceDemandLawApproach"/>
-    <stepSize value="30.0">
+    <stepSize value="10.0">
       <unit href="librede:units#SECONDS"/>
     </stepSize>
     <startTimestamp value="1.5396991646695151E9">

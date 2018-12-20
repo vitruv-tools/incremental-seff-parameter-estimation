@@ -8,7 +8,7 @@
       <steps_Behaviour xsi:type="seff:StopAction" id="_XroZAMjPEeiWRYm1yDC5rQ" entityName="stop" predecessor_AbstractAction="_SSitEMjSEeiWRYm1yDC5rQ"/>
       <steps_Behaviour xsi:type="seff:InternalAction" id="_OkrUMMjSEeiWRYm1yDC5rQ" entityName="A.methodA-internal-0" predecessor_AbstractAction="_Xrnx8MjPEeiWRYm1yDC5rQ" successor_AbstractAction="_SSitEMjSEeiWRYm1yDC5rQ">
         <resourceDemand_Action>
-          <specification_ParametericResourceDemand specification="0.003013285109413671 * a.VALUE + (9.54729807592739E-5 * (a.VALUE ^ 3.0) + (-0.0029830101710178365))"/>
+          <specification_ParametericResourceDemand specification="0.002371535411311139 * a.VALUE + (1.0173117922164919E-4 * (a.VALUE ^ 3.0) + (-0.0020828087728319636))"/>
           <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
         </resourceDemand_Action>
       </steps_Behaviour>
@@ -28,7 +28,7 @@
           </steps_Behaviour>
           <steps_Behaviour xsi:type="seff:InternalAction" id="_dhstIMjSEeiWRYm1yDC5rQ" entityName="A.methodA-internal-1" predecessor_AbstractAction="_SSx9oMjSEeiWRYm1yDC5rQ" successor_AbstractAction="_VTWLoMjSEeiWRYm1yDC5rQ">
             <resourceDemand_Action>
-              <specification_ParametericResourceDemand specification="0.010644577131430074"/>
+              <specification_ParametericResourceDemand specification="-8.106188446451149E-6 * (a.VALUE ^ 3.0) + (0.004717325898827735 * (a.VALUE ^ 0.5) + (0.0018798714625557818))"/>
               <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
             </resourceDemand_Action>
           </steps_Behaviour>

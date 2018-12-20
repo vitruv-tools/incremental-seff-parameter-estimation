@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,10 @@ public class CsvWriter {
     private final PrintWriter printWriter;
 
     private final List<String> headers;
+    
+    private final List<String> cache;
+    
+    private static int INITIAL_CACHE_SIZE = 100000;
 
     public CsvWriter(String fileName, String... headers) throws IOException {
         File file = new File(fileName);
@@ -25,6 +30,7 @@ public class CsvWriter {
         printWriter = new PrintWriter(fileWriter);
         String asd = String.join(",", headers);
         printWriter.println(asd);
+        cache = new ArrayList<String>(INITIAL_CACHE_SIZE);
     }
 
     public CsvWriter(String fileName, List<String> headers, String... headers2) throws IOException {
@@ -34,11 +40,13 @@ public class CsvWriter {
         printWriter = new PrintWriter(fileWriter);
         String asd = String.join(",", headers);
         printWriter.println(asd);
+        cache = new ArrayList<String>(INITIAL_CACHE_SIZE);
     }
 
     public void write(double... values) {
         String asd = Arrays.stream(values).mapToObj(String::valueOf).collect(Collectors.joining(","));
-        printWriter.println(asd);
+        cache.add(asd);
+        
     }
 
     public void write(Map<String, Object> arguments, double... values) {
@@ -51,6 +59,10 @@ public class CsvWriter {
     }
 
     public void close() {
+        for (String string : cache) {
+            printWriter.println(string);
+        }
+        cache.clear();
         printWriter.close();
     }
 }
