@@ -1,9 +1,5 @@
 package evaluation.casestudy;
 
-<<<<<<< Upstream, based on origin/master
-import evaluation.dependencies.Action;
-=======
->>>>>>> 0db986a Intermediate commit.
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring.ServiceParameters;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring.ThreadMonitoringController;
 
