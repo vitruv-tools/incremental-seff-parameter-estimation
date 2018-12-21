@@ -1,0 +1,13 @@
+{
+	"javaPath" : "/Library/Java/JavaVirtualMachines/jdk1.8.0_171.jdk/Contents/Home/bin/java",
+	"eclipsePath" : "/Users/david/Desktop/Studium/WS1819/Praktikum IngSoftware/Setup Automation/Eclipse.app/Contents/Eclipse/",
+	
+	"repositoryPath" : "casestudy-data/pcm/cocome.repository",
+	"systemPath" : "casestudy-data/pcm/cocome.system",
+	"usageModelPath" : "casestudy-data/pcm/cocome.usagemodel",
+	"allocationModelPath" : "casestudy-data/pcm/cocome.allocation",
+	"resourceEnvironmentModelPath" : "casestudy-data/pcm/cocome.resourceenvironment",
+	
+	"monitoringDataPath" : "casestudy-data/monitoring",
+	"monitoringDataMapping" : "casestudy-data/config/data-mapping.json"
+}

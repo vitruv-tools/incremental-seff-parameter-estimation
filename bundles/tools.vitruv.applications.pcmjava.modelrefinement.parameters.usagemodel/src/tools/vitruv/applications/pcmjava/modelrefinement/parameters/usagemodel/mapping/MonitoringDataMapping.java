@@ -23,4 +23,12 @@ public class MonitoringDataMapping {
 		return this.parameterMapping.containsKey(monitoringName);
 	}
 
+	public Map<String, String> getParameterMapping() {
+		return parameterMapping;
+	}
+
+	public void setParameterMapping(Map<String, String> parameterMapping) {
+		this.parameterMapping = parameterMapping;
+	}
+
 }

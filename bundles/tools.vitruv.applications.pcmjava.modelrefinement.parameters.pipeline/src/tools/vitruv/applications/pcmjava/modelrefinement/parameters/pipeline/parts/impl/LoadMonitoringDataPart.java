@@ -7,13 +7,15 @@ public class LoadMonitoringDataPart extends AbstractPipelinePart {
 
 	private String monitoringDataPath;
 
-	protected LoadMonitoringDataPart(String monitoringDataPath) {
+	public LoadMonitoringDataPart(String monitoringDataPath) {
 		super(false); // always executed
 		this.monitoringDataPath = monitoringDataPath;
 	}
 
 	@Override
 	protected void execute() {
+		logger.info("Loading monitoring data.");
+
 		this.getBlackboard().setMonitoringData(new KiekerMonitoringReader(monitoringDataPath));
 	}
 
