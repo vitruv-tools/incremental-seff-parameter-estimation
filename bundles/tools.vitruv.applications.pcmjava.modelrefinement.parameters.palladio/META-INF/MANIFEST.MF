@@ -154,4 +154,5 @@ Import-Package: org.palladiosimulator.edp2.local,
  org.palladiosimulator.edp2.util,
  org.palladiosimulator.experimentautomation.application.config
 Export-Package: tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio,
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio.results,
  tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio.test

@@ -92,6 +92,11 @@ public class UsageScenarioBehaviourBuilder {
 		PCMRandomVariable interArrival = ServiceCallUtil.buildLongLiteral(interArrivalTime);
 		workload.setInterArrivalTime_OpenWorkload(interArrival);
 
+		// if only one branch
+		if (clusters.size() == 1) {
+			return Pair.of(buildBehaviour(clusters.get(0)), workload);
+		}
+
 		// build branches
 		for (SessionCluster cluster : clusters) {
 			double clusterExecutions = highestInterarrival / (double) cluster.getInterArrivalTimeAverage();

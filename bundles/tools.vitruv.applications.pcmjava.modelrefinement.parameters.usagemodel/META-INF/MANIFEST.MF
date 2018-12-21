@@ -13,3 +13,11 @@ Require-Bundle: org.palladiosimulator.pcm;bundle-version="4.1.0",
  org.junit
 Import-Package: org.eclipse.debug.core,
  org.eclipse.debug.ui
+Export-Package: tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel,
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.cluster,
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.data,
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.data.usage,
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.mapping,
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.session,
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.test,
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.util
