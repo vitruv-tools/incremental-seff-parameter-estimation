@@ -12,67 +12,57 @@ public class Common {
     public static final int ComputationConst2 = 10;
 
     public static String DataRootPath = "./test-data/casestudy/";
-<<<<<<< Upstream, based on origin/master
-    
+
     public static String ResultsPath = DataRootPath + "results-data-2/";
-    
+
     public static class EvaluationData {
         public static final String Default = "default";
         public static final String Threaded = "threaded";
         public static final String Threaded2 = "threaded-2";
     }
-    
+
     public static String getChangedName(String name) {
         return name + "-changed";
     }
-    
+
     public final Mode logMode;
 
     public final Mode runMode;
-    
+
     public final String name;
-    
+
     public Common(Mode mode, Mode runMode, String name) {
         this.logMode = mode;
         this.runMode = runMode;
         this.name = name;
     }
-    
+
     public String getResponseTimeResultPath() {
         String path = ResultsPath + this.name + "/" + getFileSessionId() + "/response-time/";
         createDirectory(path);
         return path;
     }
-    
+
     public String getUtilizationResultPath() {
         String path = ResultsPath + this.name + "/" + getFileSessionId() + "/utilization/";
         createDirectory(path);
         return path;
     }
-    
+
     public String getSimulatedResponseTimeResultPath() {
         String path = ResultsPath + this.name + "/" + getFileSessionId() + "/simulated-response-time/";
         createDirectory(path);
         return path;
     }
-    
+
     public String getFileSessionId() {
         return "session-log-" + logMode + "-run-" + runMode;
-=======
-
-    public Mode logMode;
-
-    public Mode runMode;
-
-    public static String getSessionId(Mode mode, Mode runMode) {
-        return "session-log-" + mode + "-run-" + runMode;
->>>>>>> 0db986a Intermediate commit.
     }
 
     public String getSessionId() {
         return "session-" + this.name + "-log-" + logMode + "-run-" + runMode;
     }
-    
+
     public void createDirectory(String dirPath) {
         File file = new File(dirPath);
         file.getParentFile().mkdirs();
@@ -106,11 +96,9 @@ public class Common {
 
     public void logBranchOnIteration(Mode mode, String branchId, String branchTransitionId) {
         if (this.logMode == mode || this.logMode == Mode.Complete) {
-            long start = System.currentTimeMillis();
             // Monitoring actions start
             ThreadMonitoringController.getInstance().logBranchExecution(branchId, branchTransitionId);
             // Monitoring actions end
-            System.out.println(System.currentTimeMillis() - start);
         }
     }
 

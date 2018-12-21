@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.ServiceParameters;
-import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.dataset.ServiceCallDataSetImpl.ServiceCallImpl;
 
 public class MockServiceCallDataSet extends ServiceCallDataSetImpl {
 
@@ -17,7 +16,8 @@ public class MockServiceCallDataSet extends ServiceCallDataSetImpl {
     public String add(Map<String, Object> serviceArguments, String serviceId, long entryTime, long exitTime,
             String callerId, String callerExecutionId) {
         String executionId = UUID.randomUUID().toString();
-        ServiceCallImpl serviceCall = new ServiceCallImpl(Optional.ofNullable(callerId), callerExecutionId, entryTime,
+        ServiceCallImpl serviceCall = new ServiceCallImpl(Optional.ofNullable(callerId), null, callerExecutionId,
+                entryTime,
                 exitTime, ServiceParameters.build(serviceArguments), serviceId, executionId);
         super.add(serviceCall);
         return executionId;
