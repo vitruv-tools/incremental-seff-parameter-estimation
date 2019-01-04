@@ -6,3 +6,4 @@ Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: tools.vitruv.applications.pcmjava.modelrefinement.parameters.load
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit4;bundle-version="4.8.1"
+Export-Package: tools.vitruv.applications.pcmjava.modelrefinement.parameters.load

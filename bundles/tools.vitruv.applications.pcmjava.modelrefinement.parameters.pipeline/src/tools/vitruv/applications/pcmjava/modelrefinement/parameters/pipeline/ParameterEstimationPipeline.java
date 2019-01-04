@@ -10,9 +10,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.config.EPAPipelineConfiguration;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.data.LocalFilesystemPCM;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.parts.impl.CrossValidationPart;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.parts.impl.DockerImportMonitoringPart;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.parts.impl.LoadMonitoringDataPart;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.parts.impl.LoadPCMModelsPart;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.parts.impl.PalladioExecutorPart;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.parts.impl.ParameterEstimationPart;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.parts.impl.ResourceDemandEstimationPart;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.parts.impl.UsageModelDerivationPart;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.mapping.MonitoringDataMapping;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.PcmUtils;
@@ -47,12 +50,22 @@ public class ParameterEstimationPipeline extends AbstractPCMPipeline {
 		// initialization part
 		this.addPart(new LoadPCMModelsPart(filesystemPCM));
 
+		// produce monitoring data (load test)
+		// TODO inspect why load testing doesnt work
+		// this.addPart(new
+		// DockerCleanMonitoringPart(pipelineConfiguration.getDocker()));
+		// this.addPart(new LoadTestingPart(pipelineConfiguration.getJmeterPath(),
+		// pipelineConfiguration.getJmxPath()));
+		this.addPart(new DockerImportMonitoringPart(pipelineConfiguration.getDocker(),
+				pipelineConfiguration.getMonitoringDataPath()));
+
 		// load current monitoring data
 		this.addPart(new LoadMonitoringDataPart(pipelineConfiguration.getMonitoringDataPath()));
 
 		// derive actual models
-		// this.addPart(new ParameterEstimationPart()); // -> doesnt work atm, maybe
-		// need to cherry pick his changes
+		// -> doesnt work atm, maybe need to cherry pick his changes
+		this.addPart(new ParameterEstimationPart());
+		this.addPart(new ResourceDemandEstimationPart());
 		this.addPart(new UsageModelDerivationPart(monitoringDataMapping));
 
 		// perform palladio analysis

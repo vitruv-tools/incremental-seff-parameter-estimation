@@ -18,62 +18,63 @@ import tools.vitruv.applications.pcmjava.modelrefinement.parameters.loop.LoopPre
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.PcmUtils;
 
 /**
- * Implements loop estimation and prediction by using {@link WekaLoopModelEstimation}.
+ * Implements loop estimation and prediction by using
+ * {@link WekaLoopModelEstimation}.
  * 
  * @author JP
  *
  */
 public class LoopEstimationImpl implements LoopEstimation, LoopPrediction {
 
-    private static final Logger LOGGER = Logger.getLogger(LoopEstimationImpl.class);
-    private final Map<String, LoopModel> modelCache;
+	private static final Logger LOGGER = Logger.getLogger(LoopEstimationImpl.class);
+	private final Map<String, LoopModel> modelCache;
 
-    /**
-     * Initializes a new instance of {@link LoopEstimationImpl}.
-     */
-    public LoopEstimationImpl() {
-        this.modelCache = new HashMap<>();
-    }
+	/**
+	 * Initializes a new instance of {@link LoopEstimationImpl}.
+	 */
+	public LoopEstimationImpl() {
+		this.modelCache = new HashMap<>();
+	}
 
-    @Override
-    public double estimateIterations(final LoopAction loop, final ServiceCall serviceCall) {
-        LoopModel loopModel = this.modelCache.get(loop.getId());
-        if (loopModel == null) {
-            throw new IllegalArgumentException("A estimation for loop with id " + loop.getId() + " was not found.");
-        }
-        return loopModel.predictIterations(serviceCall);
-    }
+	@Override
+	public double estimateIterations(final LoopAction loop, final ServiceCall serviceCall) {
+		LoopModel loopModel = this.modelCache.get(loop.getId());
+		if (loopModel == null) {
+			return 0;
+		}
+		return loopModel.predictIterations(serviceCall);
+	}
 
-    @Override
-    public void update(final Repository pcmModel, final ServiceCallDataSet serviceCalls,
-            final LoopDataSet loopIterations) {
+	@Override
+	public void update(final Repository pcmModel, final ServiceCallDataSet serviceCalls,
+			final LoopDataSet loopIterations) {
 
-        WekaLoopModelEstimation estimation = new WekaLoopModelEstimation(serviceCalls, loopIterations);
+		WekaLoopModelEstimation estimation = new WekaLoopModelEstimation(serviceCalls, loopIterations);
 
-        Map<String, LoopModel> loopModels = estimation.estimateAll();
+		Map<String, LoopModel> loopModels = estimation.estimateAll();
 
-        this.modelCache.putAll(loopModels);
+		this.modelCache.putAll(loopModels);
 
-        this.applyEstimations(pcmModel);
-    }
+		this.applyEstimations(pcmModel);
+	}
 
-    private void applyEstimations(final Repository pcmModel) {
-        List<LoopAction> loops = PcmUtils.getObjects(pcmModel, LoopAction.class);
-        for (LoopAction loopAction : loops) {
-            this.applyModel(loopAction);
-        }
-    }
+	private void applyEstimations(final Repository pcmModel) {
+		List<LoopAction> loops = PcmUtils.getObjects(pcmModel, LoopAction.class);
+		for (LoopAction loopAction : loops) {
+			this.applyModel(loopAction);
+		}
+	}
 
-    private void applyModel(final LoopAction loop) {
-        LoopModel loopModel = this.modelCache.get(loop.getId());
-        if (loopModel == null) {
-            LOGGER.warn(
-                    "A estimation for loop with id " + loop.getId() + " was not found. Nothing is set for this loop.");
-            return;
-        }
-        String stoEx = loopModel.getIterationsStochasticExpression();
-        PCMRandomVariable randomVariable = CoreFactory.eINSTANCE.createPCMRandomVariable();
-        randomVariable.setSpecification(stoEx);
-        loop.setIterationCount_LoopAction(randomVariable);
-    }
+	private void applyModel(final LoopAction loop) {
+		LoopModel loopModel = this.modelCache.get(loop.getId());
+		if (loopModel == null) {
+			LOGGER.warn(
+					"A estimation for loop with id " + loop.getId() + " was not found. Nothing is set for this loop.");
+			return;
+		}
+		String stoEx = loopModel.getIterationsStochasticExpression();
+		PCMRandomVariable randomVariable = CoreFactory.eINSTANCE.createPCMRandomVariable();
+		randomVariable.setSpecification(stoEx);
+		loop.setIterationCount_LoopAction(randomVariable);
+	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.palladiosimulator.pcm.repository.Repository;
+import org.palladiosimulator.pcm.seff.InternalAction;
 import org.palladiosimulator.pcm.system.System;
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
 
@@ -24,6 +25,10 @@ public class UsageModelExtractorTest {
 
 		Repository pcmModel = PcmUtils.readFromFile(new File("cocome/cocome.repository").getAbsolutePath(),
 				Repository.class);
+
+		java.lang.System.out.println(
+				PcmUtils.getElementById(pcmModel, InternalAction.class, "_2GlXMNL-EdujoZKiiOMQBA").getEntityName());
+
 		System pcmSystem = PcmUtils.readFromFile(new File("cocome/cocome.system").getAbsolutePath(), System.class);
 		UsageModel usage = PcmUtils.readFromFile(new File("cocome/cocome.usagemodel").getAbsolutePath(),
 				UsageModel.class);

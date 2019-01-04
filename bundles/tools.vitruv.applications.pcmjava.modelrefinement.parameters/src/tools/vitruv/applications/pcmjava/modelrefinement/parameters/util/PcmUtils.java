@@ -222,5 +222,6 @@ public class PcmUtils {
 	 */
 	public static void loadPCMModels() {
 		RepositoryPackage.eINSTANCE.eClass();
+		PcmPackage.eINSTANCE.eClass();
 	}
 }

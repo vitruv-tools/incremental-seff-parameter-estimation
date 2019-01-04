@@ -1,5 +1,5 @@
 {
 	"parameterMapping" : {
-		"products.VALUE" : "saleTO.NUMBER_OF_ELEMENTS"
+		"saleTO.NUMBER_OF_ELEMENTS" : "saleTO.NUMBER_OF_ELEMENTS"
 	}
 }

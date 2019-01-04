@@ -14,6 +14,8 @@ Require-Bundle: tools.vitruv.applications.pcmjava.modelrefinement.parameters;bun
  org.palladiosimulator.experimentautomation
 Export-Package: tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline,
  tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.config,
- tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.data,
  tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.parts,
  tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.parts.impl
+Import-Package: tools.vitruv.applications.pcmjava.modelrefinement.parameters.estimation.parts,
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters.estimation.parts.impl,
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.data

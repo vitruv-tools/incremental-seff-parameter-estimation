@@ -10,15 +10,12 @@ import org.apache.jorphan.collections.HashTree;
 
 public class JMeterExecutor {
 	private final String JMETER_PATH;
-	private final File INPUT_JMX;
 
 	public JMeterExecutor(String jMeterPath) {
 		JMETER_PATH = jMeterPath;
-
-		INPUT_JMX = new File("load/load.jmx");
 	}
 
-	public void execute() throws IOException {
+	public void execute(File file) throws IOException {
 		// JMeter Engine
 		StandardJMeterEngine jmeter = new StandardJMeterEngine();
 
@@ -31,7 +28,7 @@ public class JMeterExecutor {
 		SaveService.loadProperties();
 
 		// Load existing .jmx Test Plan
-		HashTree testPlanTree = SaveService.loadTree(INPUT_JMX);
+		HashTree testPlanTree = SaveService.loadTree(file);
 
 		// TODO adjust tree and create a test plan with appropriate properties
 

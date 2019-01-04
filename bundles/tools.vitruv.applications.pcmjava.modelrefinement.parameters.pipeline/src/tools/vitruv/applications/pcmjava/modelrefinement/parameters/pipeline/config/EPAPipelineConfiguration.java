@@ -19,6 +19,7 @@ public class EPAPipelineConfiguration {
 
 	private String javaPath;
 	private String eclipsePath;
+	private String jmeterPath;
 
 	private String repositoryPath;
 	private String systemPath;
@@ -26,8 +27,12 @@ public class EPAPipelineConfiguration {
 	private String allocationModelPath;
 	private String resourceEnvironmentModelPath;
 
+	private String jmxPath;
+
 	private String monitoringDataMapping;
 	private String monitoringDataPath;
+
+	private DockerConfiguration docker;
 
 	public String getJavaPath() {
 		return javaPath;
@@ -99,5 +104,29 @@ public class EPAPipelineConfiguration {
 
 	public void setMonitoringDataMapping(String monitoringDataMapping) {
 		this.monitoringDataMapping = monitoringDataMapping;
+	}
+
+	public String getJmeterPath() {
+		return jmeterPath;
+	}
+
+	public void setJmeterPath(String jmeterPath) {
+		this.jmeterPath = jmeterPath;
+	}
+
+	public DockerConfiguration getDocker() {
+		return docker;
+	}
+
+	public void setDocker(DockerConfiguration docker) {
+		this.docker = docker;
+	}
+
+	public String getJmxPath() {
+		return jmxPath;
+	}
+
+	public void setJmxPath(String jmxPath) {
+		this.jmxPath = jmxPath;
 	}
 }

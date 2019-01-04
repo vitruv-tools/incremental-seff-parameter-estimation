@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Estimation
+Bundle-SymbolicName: tools.vitruv.applications.pcmjava.modelrefinement.parameters.estimation
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: tools.vitruv.applications.pcmjava.modelrefinement.parameters.estimation
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: tools.vitruv.applications.pcmjava.modelrefinement.parameters;bundle-version="1.0.0",
+ org.palladiosimulator.pcm,
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring.adapter;bundle-version="1.0.0",
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters.monitoring;bundle-version="1.0.0"
+Export-Package: tools.vitruv.applications.pcmjava.modelrefinement.parameters.estimation.parts,
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters.estimation.parts.impl,
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.data

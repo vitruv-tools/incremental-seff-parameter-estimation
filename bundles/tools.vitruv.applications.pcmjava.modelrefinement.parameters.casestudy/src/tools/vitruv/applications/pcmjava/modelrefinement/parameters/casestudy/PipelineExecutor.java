@@ -14,6 +14,7 @@ import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.con
 public class PipelineExecutor {
 
 	public static void main(String[] args) {
+
 		EPAPipelineConfiguration config = EPAPipelineConfiguration
 				.fromFile(new File("casestudy-data/config/pipeline.config.json"));
 

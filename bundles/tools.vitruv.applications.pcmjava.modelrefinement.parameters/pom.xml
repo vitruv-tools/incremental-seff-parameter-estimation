@@ -12,22 +12,9 @@
 			<name>librede</name>
 			<url>https://se4.informatik.uni-wuerzburg.de/nexus/content/repositories/snapshots</url>
 		</repository>
-		<repository>
-			<id>palladio-headless-mvn-repo</id>
-			<url>http://palladioheadless.fabian-keller.de/</url>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
-		</repository>
 	</repositories>
 
 	<dependencies>
-		<dependency>
-			<groupId>de.fabiankeller.palladio-headless</groupId>
-			<artifactId>palladio-bridge</artifactId>
-			<version>0.3.1</version>
-		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>

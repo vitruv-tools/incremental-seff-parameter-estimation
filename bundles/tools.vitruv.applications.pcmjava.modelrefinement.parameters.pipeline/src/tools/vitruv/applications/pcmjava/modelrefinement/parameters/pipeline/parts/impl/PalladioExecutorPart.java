@@ -21,7 +21,6 @@ public class PalladioExecutorPart extends AbstractPipelinePart {
 		super(false);
 
 		executor = new HeadlessExecutor(javaPath, eclipsePath);
-		System.out.println(javaPath);
 	}
 
 	@Override
