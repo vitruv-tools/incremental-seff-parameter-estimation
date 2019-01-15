@@ -1,5 +1,8 @@
 package tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.MonitoringDataSet;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio.results.PalladioAnalysisResults;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.data.InMemoryPCM;
@@ -12,6 +15,14 @@ public class DataBlackboard {
 	private LocalFilesystemPCM filesystemPcm;
 
 	private PalladioAnalysisResults analysisResults;
+
+	private PipelineState state;
+
+	private List<IPipelineStateListener> listeners;
+
+	public DataBlackboard() {
+		this.listeners = new ArrayList<>();
+	}
 
 	public MonitoringDataSet getMonitoringData() {
 		return monitoringData;
@@ -47,6 +58,19 @@ public class DataBlackboard {
 
 	public synchronized void setAnalysisResults(PalladioAnalysisResults analysisResults) {
 		this.analysisResults = analysisResults;
+	}
+
+	public PipelineState getState() {
+		return state;
+	}
+
+	public void setState(PipelineState state) {
+		this.state = state;
+		this.listeners.forEach(s -> s.onChange(state));
+	}
+
+	public List<IPipelineStateListener> getListeners() {
+		return listeners;
 	}
 
 }

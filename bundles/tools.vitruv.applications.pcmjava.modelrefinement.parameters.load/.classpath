@@ -49,7 +49,6 @@
 	<classpathentry kind="lib" path="jmeter-lib/log4j-1.2-api-2.11.0.jar"/>
 	<classpathentry kind="lib" path="jmeter-lib/log4j-api-2.11.0.jar"/>
 	<classpathentry kind="lib" path="jmeter-lib/log4j-core-2.11.0.jar"/>
-	<classpathentry kind="lib" path="jmeter-lib/log4j-slf4j-impl-2.11.0.jar"/>
 	<classpathentry kind="lib" path="jmeter-lib/mail-1.5.0-b01.jar"/>
 	<classpathentry kind="lib" path="jmeter-lib/mongo-java-driver-2.11.3.jar"/>
 	<classpathentry kind="lib" path="jmeter-lib/oro-2.0.8.jar"/>

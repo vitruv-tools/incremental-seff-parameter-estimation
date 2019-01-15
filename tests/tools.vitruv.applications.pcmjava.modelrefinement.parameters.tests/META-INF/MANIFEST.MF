@@ -3,9 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Tests
 Bundle-SymbolicName: tools.vitruv.applications.pcmjava.modelrefinement.parameters.tests
 Bundle-Version: 1.0.0.qualifier
-Export-Package: monitoring.tests.simple,
- monitoring.tests.simple2,
- tools.vitruv.applications.pcmjava.modelrefinement.parameters,
+Export-Package: tools.vitruv.applications.pcmjava.modelrefinement.parameters,
  tools.vitruv.applications.pcmjava.modelrefinement.parameters.branch,
  tools.vitruv.applications.pcmjava.modelrefinement.parameters.loop,
  tools.vitruv.applications.pcmjava.modelrefinement.parameters.rd,

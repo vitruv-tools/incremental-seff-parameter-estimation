@@ -68,9 +68,9 @@ public class ThreadMonitoringController {
      * @param serviceId
      *            The SEFF Id for the service.
      */
-    public void enterService(final String serviceId) {
+    public void enterService(final String serviceId, final String assemblyId) {
         long before = System.currentTimeMillis();
-        this.enterService(serviceId, ServiceParameters.EMPTY);
+        this.enterService(serviceId, assemblyId, ServiceParameters.EMPTY);
         overhead += System.currentTimeMillis() - before;
     }
 
@@ -84,7 +84,8 @@ public class ThreadMonitoringController {
      * @param serviceParameters
      *            The service parameter values.
      */
-    public void enterService(final String serviceId, final ServiceParameters serviceParameters) {
+    public void enterService(final String serviceId, final String assemblyId,
+            final ServiceParameters serviceParameters) {
         long before = System.currentTimeMillis();
         String currentServiceExecutionId = null;
         String currentCallerId = null;
@@ -102,7 +103,7 @@ public class ThreadMonitoringController {
             newService = this.serviceControllers.get(this.currentServiceIndex);
         }
 
-        newService.enterService(serviceId, this.threadId, sessionId, serviceParameters, currentCallerId,
+        newService.enterService(serviceId, assemblyId, this.threadId, sessionId, serviceParameters, currentCallerId,
                 currentServiceExecutionId);
 
         this.currentServiceController = newService;
@@ -173,9 +174,10 @@ public class ThreadMonitoringController {
      * @param startTime
      *            The start time of the response time.
      */
-    public void logResponseTime(final String internalActionId, final String resourceId, final long startTime) {
+    public void logResponseTime(final String internalActionId, final String resourceId, final String assemblyId,
+            final long startTime) {
         long before = System.currentTimeMillis();
-        this.currentServiceController.logResponseTime(internalActionId, resourceId, startTime);
+        this.currentServiceController.logResponseTime(internalActionId, resourceId, assemblyId, startTime);
         overhead += System.currentTimeMillis() - before;
     }
 
@@ -234,9 +236,11 @@ public class ThreadMonitoringController {
         private String callerServiceExecutionId;
         private String callerId;
         private String currentCallerId;
+        private String assemblyId;
 
         public void enterService(
                 final String serviceId,
+                final String assemblyId,
                 final long threadId,
                 final String sessionId,
                 final ServiceParameters serviceParameters,
@@ -244,6 +248,7 @@ public class ThreadMonitoringController {
                 final String callerServiceExecutionId) {
             this.serviceId = serviceId;
             this.sessionId = sessionId;
+            this.assemblyId = assemblyId;
             this.serviceParameters = serviceParameters;
             this.callerServiceExecutionId = callerServiceExecutionId;
             this.callerId = callerId;
@@ -262,6 +267,7 @@ public class ThreadMonitoringController {
                     this.serviceParameters.toString(),
                     this.callerServiceExecutionId,
                     this.callerId,
+                    this.assemblyId,
                     this.serviceStartTime,
                     stopTime);
 
@@ -296,7 +302,8 @@ public class ThreadMonitoringController {
             RECORDS_WRITER.write(record);
         }
 
-        public void logResponseTime(final String internalActionId, final String resourceId, final long startTime) {
+        public void logResponseTime(final String internalActionId, final String resourceId, final String assemblyId,
+                final long startTime) {
             long currentTime = TIME_SOURCE.getTime();
 
             ResponseTimeRecord record = new ResponseTimeRecord(
@@ -304,6 +311,7 @@ public class ThreadMonitoringController {
                     this.serviceExecutionId,
                     internalActionId,
                     resourceId,
+                    this.assemblyId,
                     startTime,
                     currentTime);
 

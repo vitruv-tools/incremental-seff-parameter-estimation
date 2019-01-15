@@ -73,6 +73,8 @@ public class CrossValidationPart extends AbstractPipelinePart {
 		java.lang.System.out.println("KS TEST = " + ks_ab);
 		java.lang.System.out.println("Average analysis: " + analysisDistribution.avg() + "ms");
 		java.lang.System.out.println("Average monitoring: " + monitoringDistribution.avg() + "ms");
+		java.lang.System.out
+				.println("Average TEST = " + (analysisDistribution.avgTest(monitoringDistribution) * 100) + "%");
 	}
 
 }

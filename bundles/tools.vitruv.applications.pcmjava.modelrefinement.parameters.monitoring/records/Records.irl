@@ -27,6 +27,7 @@ entity LoopRecord : ServiceContextRecord {
 entity ResponseTimeRecord : ServiceContextRecord {
    string internalActionId = "<not set>"
    string resourceId = "<not set>"
+   string assemblyId = "<not set>"
    long startTime
    long stopTime
 }
@@ -36,6 +37,7 @@ entity ServiceCallRecord : ServiceContextRecord {
    string parameters = "<not set>"
    string callerServiceExecutionId = "<not set>"
    string callerId = "<not set>"
+   string assemblyId = "<not set>"
    long entryTime
    long exitTime
 }

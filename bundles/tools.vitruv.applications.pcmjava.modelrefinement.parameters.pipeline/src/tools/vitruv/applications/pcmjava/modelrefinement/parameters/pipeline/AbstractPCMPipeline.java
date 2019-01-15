@@ -9,7 +9,7 @@ import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.par
 
 public abstract class AbstractPCMPipeline {
 	private Logger logger;
-	private DataBlackboard blackboard;
+	protected DataBlackboard blackboard;
 
 	private List<AbstractPipelinePart> parts;
 	private int iteration;

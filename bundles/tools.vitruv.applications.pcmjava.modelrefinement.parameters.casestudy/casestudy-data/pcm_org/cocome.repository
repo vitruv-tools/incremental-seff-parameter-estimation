@@ -45,7 +45,7 @@
       <steps_Behaviour xsi:type="seff:StopAction" id="_y7hcUNLxEduQ7qbNANXHPw" predecessor_AbstractAction="_zJrNENLxEduQ7qbNANXHPw"/>
       <steps_Behaviour xsi:type="seff:InternalAction" id="_zJrNENLxEduQ7qbNANXHPw" entityName="Query through EntityManager" predecessor_AbstractAction="_ywDMINLxEduQ7qbNANXHPw" successor_AbstractAction="_y7hcUNLxEduQ7qbNANXHPw">
         <resourceDemand_Action>
-          <specification_ParametericResourceDemand specification="1"/>
+          <specification_ParametericResourceDemand specification="50"/>
           <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
         </resourceDemand_Action>
       </steps_Behaviour>
@@ -254,7 +254,7 @@
       <steps_Behaviour xsi:type="seff:StopAction" id="_c4EJQNJOEduQ7qbNANXHPw" entityName="stopBooksale" predecessor_AbstractAction="_XoxOlP1OEeicRPoFxRMR1Q"/>
       <steps_Behaviour xsi:type="seff:InternalAction" id="_m1YuANJOEduQ7qbNANXHPw" entityName="persistence context setup" predecessor_AbstractAction="_qPZWwNJOEduQ7qbNANXHPw" successor_AbstractAction="_wAfysNJOEduQ7qbNANXHPw">
         <resourceDemand_Action>
-          <specification_ParametericResourceDemand specification="19"/>
+          <specification_ParametericResourceDemand specification="25"/>
           <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
         </resourceDemand_Action>
       </steps_Behaviour>

@@ -30,6 +30,8 @@ public class JMeterExecutor {
 		// Load existing .jmx Test Plan
 		HashTree testPlanTree = SaveService.loadTree(file);
 
+		System.out.println(testPlanTree.keySet());
+
 		// TODO adjust tree and create a test plan with appropriate properties
 
 		// Run JMeter Test
