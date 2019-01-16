@@ -174,10 +174,10 @@ public class ThreadMonitoringController {
      * @param startTime
      *            The start time of the response time.
      */
-    public void logResponseTime(final String internalActionId, final String resourceId, final String assemblyId,
+    public void logResponseTime(final String internalActionId, final String resourceId,
             final long startTime) {
         long before = System.currentTimeMillis();
-        this.currentServiceController.logResponseTime(internalActionId, resourceId, assemblyId, startTime);
+        this.currentServiceController.logResponseTime(internalActionId, resourceId, startTime);
         overhead += System.currentTimeMillis() - before;
     }
 
@@ -302,7 +302,7 @@ public class ThreadMonitoringController {
             RECORDS_WRITER.write(record);
         }
 
-        public void logResponseTime(final String internalActionId, final String resourceId, final String assemblyId,
+        public void logResponseTime(final String internalActionId, final String resourceId,
                 final long startTime) {
             long currentTime = TIME_SOURCE.getTime();
 
@@ -311,7 +311,6 @@ public class ThreadMonitoringController {
                     this.serviceExecutionId,
                     internalActionId,
                     resourceId,
-                    this.assemblyId,
                     startTime,
                     currentTime);
 
