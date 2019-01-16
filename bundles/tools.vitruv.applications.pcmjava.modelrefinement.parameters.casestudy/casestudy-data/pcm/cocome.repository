@@ -25,7 +25,7 @@
       <steps_Behaviour xsi:type="seff:StopAction" id="_Tbk7ENLaEduQ7qbNANXHPw" predecessor_AbstractAction="_T1zY8NLaEduQ7qbNANXHPw"/>
       <steps_Behaviour xsi:type="seff:InternalAction" id="_T1zY8NLaEduQ7qbNANXHPw" entityName="interact with java EntityManager" predecessor_AbstractAction="_TNHoUNLaEduQ7qbNANXHPw" successor_AbstractAction="_Tbk7ENLaEduQ7qbNANXHPw">
         <resourceDemand_Action>
-          <specification_ParametericResourceDemand specification="14.42193064942941"/>
+          <specification_ParametericResourceDemand specification="9.147411136096208"/>
           <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
         </resourceDemand_Action>
       </steps_Behaviour>
@@ -35,7 +35,7 @@
       <steps_Behaviour xsi:type="seff:StopAction" id="_aedQgNLxEduQ7qbNANXHPw" predecessor_AbstractAction="_diGnsNLxEduQ7qbNANXHPw"/>
       <steps_Behaviour xsi:type="seff:InternalAction" id="_diGnsNLxEduQ7qbNANXHPw" entityName="query using the entity manager" predecessor_AbstractAction="_aOgwANLxEduQ7qbNANXHPw" successor_AbstractAction="_aedQgNLxEduQ7qbNANXHPw">
         <resourceDemand_Action>
-          <specification_ParametericResourceDemand specification="9.508625340857796"/>
+          <specification_ParametericResourceDemand specification="6.163096101433304"/>
           <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
         </resourceDemand_Action>
       </steps_Behaviour>
@@ -45,7 +45,7 @@
       <steps_Behaviour xsi:type="seff:StopAction" id="_y7hcUNLxEduQ7qbNANXHPw" predecessor_AbstractAction="_zJrNENLxEduQ7qbNANXHPw"/>
       <steps_Behaviour xsi:type="seff:InternalAction" id="_zJrNENLxEduQ7qbNANXHPw" entityName="Query through EntityManager" predecessor_AbstractAction="_ywDMINLxEduQ7qbNANXHPw" successor_AbstractAction="_y7hcUNLxEduQ7qbNANXHPw">
         <resourceDemand_Action>
-          <specification_ParametericResourceDemand specification="41.32716522222223"/>
+          <specification_ParametericResourceDemand specification="43.047376625"/>
           <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
         </resourceDemand_Action>
       </steps_Behaviour>
@@ -254,7 +254,7 @@
       <steps_Behaviour xsi:type="seff:StopAction" id="_c4EJQNJOEduQ7qbNANXHPw" entityName="stopBooksale" predecessor_AbstractAction="_XoxOlP1OEeicRPoFxRMR1Q"/>
       <steps_Behaviour xsi:type="seff:InternalAction" id="_m1YuANJOEduQ7qbNANXHPw" entityName="persistence context setup" predecessor_AbstractAction="_qPZWwNJOEduQ7qbNANXHPw" successor_AbstractAction="_wAfysNJOEduQ7qbNANXHPw">
         <resourceDemand_Action>
-          <specification_ParametericResourceDemand specification="0.01186188826185104"/>
+          <specification_ParametericResourceDemand specification="0.0020893759647188535"/>
           <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
         </resourceDemand_Action>
       </steps_Behaviour>
@@ -266,7 +266,7 @@
           <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_3isY0NJOEduQ7qbNANXHPw" entityName="queryStockItemById" predecessor_AbstractAction="_2sTjYNJOEduQ7qbNANXHPw" successor_AbstractAction="_sWjMnP1LEeicRPoFxRMR1Q" calledService_ExternalService="_2NNuhVcvEeGI_ZRmqWdpYA" role_ExternalService="_4OSEsdCnEduC9O_qbthgAg"/>
           <steps_Behaviour xsi:type="seff:InternalAction" id="_sWjMnP1LEeicRPoFxRMR1Q" entityName="updateEntity" predecessor_AbstractAction="_3isY0NJOEduQ7qbNANXHPw" successor_AbstractAction="_2ZFscNJOEduQ7qbNANXHPw">
             <resourceDemand_Action>
-              <specification_ParametericResourceDemand specification="27.119568994510477"/>
+              <specification_ParametericResourceDemand specification="17.56105950117675"/>
               <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
             </resourceDemand_Action>
           </steps_Behaviour>
