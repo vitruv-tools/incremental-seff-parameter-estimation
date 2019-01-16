@@ -13,6 +13,7 @@ import org.apache.commons.io.FileUtils;
 import com.spotify.docker.client.DefaultDockerClient;
 import com.spotify.docker.client.DockerClient;
 
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.PipelineState;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.config.DockerConfiguration;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.parts.AbstractPipelinePart;
 
@@ -35,6 +36,8 @@ public class DockerImportMonitoringPart extends AbstractPipelinePart {
 	@Override
 	protected void execute() {
 		logger.info("Collecting monitoring data from docker.");
+
+		getBlackboard().setState(PipelineState.DOCKER_IMPORT);
 
 		// rm -rf "monitoring"
 		try {

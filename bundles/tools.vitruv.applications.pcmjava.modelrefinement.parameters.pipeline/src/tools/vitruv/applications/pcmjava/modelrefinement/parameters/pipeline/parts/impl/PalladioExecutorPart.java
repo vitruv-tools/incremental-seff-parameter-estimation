@@ -10,6 +10,7 @@ import org.palladiosimulator.servicelevelobjective.ServicelevelObjectiveFactory;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio.ExperimentBuilder;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio.HeadlessExecutor;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio.results.PalladioAnalysisResults;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.PipelineState;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.data.InMemoryPCM;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.parts.AbstractPipelinePart;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.util.PcmUtils;
@@ -26,6 +27,8 @@ public class PalladioExecutorPart extends AbstractPipelinePart {
 	@Override
 	protected void execute() {
 		logger.info("Starting PCM Simucom Analysis.");
+
+		getBlackboard().setState(PipelineState.PCM_ANALYSIS);
 
 		// create temp file containing simple slos
 		File tempSloFile;

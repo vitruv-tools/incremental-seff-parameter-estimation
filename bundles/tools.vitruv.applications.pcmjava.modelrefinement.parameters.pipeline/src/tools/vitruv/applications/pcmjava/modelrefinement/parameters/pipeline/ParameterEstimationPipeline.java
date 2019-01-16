@@ -47,9 +47,6 @@ public class ParameterEstimationPipeline extends AbstractPCMPipeline {
 			return;
 		}
 
-		// set started
-		blackboard.setState(PipelineState.STARTED);
-
 		// initialization part
 		this.addPart(new LoadPCMModelsPart(filesystemPCM));
 
@@ -77,9 +74,6 @@ public class ParameterEstimationPipeline extends AbstractPCMPipeline {
 
 		// check results
 		this.addPart(new CrossValidationPart());
-
-		// set finished
-		blackboard.setState(PipelineState.FINISHED);
 	}
 
 	private void processConfiguration() throws IOException {

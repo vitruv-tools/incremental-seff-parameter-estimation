@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
 
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.PipelineState;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.data.InMemoryPCM;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.parts.AbstractPipelinePart;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.usagemodel.UsageModelExtractor;
@@ -22,6 +23,8 @@ public class UsageModelDerivationPart extends AbstractPipelinePart {
 	@Override
 	protected void execute() {
 		logger.info("Deriving actual usage model.");
+		getBlackboard().setState(PipelineState.USAGEMODEL_UPDATE);
+
 		// load extractor
 		InMemoryPCM currentPCM = getBlackboard().getLoadedPcm();
 		UsageModelExtractor extractor = new UsageModelExtractor(currentPCM.getRepository(), currentPCM.getUsageModel(),

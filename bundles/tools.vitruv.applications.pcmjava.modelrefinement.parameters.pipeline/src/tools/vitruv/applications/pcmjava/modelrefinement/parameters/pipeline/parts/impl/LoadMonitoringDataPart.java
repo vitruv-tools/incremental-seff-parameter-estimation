@@ -1,6 +1,7 @@
 package tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.parts.impl;
 
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.impl.KiekerMonitoringReader;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.PipelineState;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.parts.AbstractPipelinePart;
 
 public class LoadMonitoringDataPart extends AbstractPipelinePart {
@@ -15,6 +16,8 @@ public class LoadMonitoringDataPart extends AbstractPipelinePart {
 	@Override
 	protected void execute() {
 		logger.info("Loading monitoring data.");
+
+		getBlackboard().setState(PipelineState.LOAD_MONITORING_DATA);
 
 		this.getBlackboard().setMonitoringData(new KiekerMonitoringReader(monitoringDataPath));
 	}

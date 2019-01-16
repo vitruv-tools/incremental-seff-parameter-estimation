@@ -5,4 +5,5 @@ Bundle-SymbolicName: tools.vitruv.applications.pcmjava.modelrefinement.parameter
 Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: tools.vitruv.applications.pcmjava.modelrefinement.parameters.casestudy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline;bundle-version="1.0.0"
+Require-Bundle: tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline;bundle-version="1.0.0",
+ tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface;bundle-version="1.0.0"

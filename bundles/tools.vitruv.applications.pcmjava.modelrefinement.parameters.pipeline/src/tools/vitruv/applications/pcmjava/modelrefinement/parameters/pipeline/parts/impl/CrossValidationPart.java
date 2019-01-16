@@ -11,6 +11,7 @@ import org.palladiosimulator.pcm.usagemodel.UsageModel;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.MonitoringDataSet;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio.results.PalladioAnalysisResults;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.palladio.util.PalladioAutomationUtil;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.PipelineState;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.data.InMemoryPCM;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.parts.AbstractPipelinePart;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.validation.LongDistribution;
@@ -26,7 +27,8 @@ public class CrossValidationPart extends AbstractPipelinePart {
 	protected void execute() {
 		logger.info("Comparing the Simucom Analysis results with the monitoring data.");
 
-		// TODO
+		// state
+		getBlackboard().setState(PipelineState.EVALUATION);
 
 		PalladioAnalysisResults results = getBlackboard().getAnalysisResults();
 
@@ -59,6 +61,9 @@ public class CrossValidationPart extends AbstractPipelinePart {
 				}
 			}
 		});
+
+		// set finished
+		getBlackboard().setState(PipelineState.FINISHED);
 	}
 
 	private void compareDistributions(ResourceDemandingSEFF seff, LongDistribution analysisDistribution,

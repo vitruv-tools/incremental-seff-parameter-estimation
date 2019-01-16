@@ -5,6 +5,7 @@ import com.spotify.docker.client.DockerClient;
 import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.ExecCreation;
 
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.PipelineState;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.config.DockerConfiguration;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.parts.AbstractPipelinePart;
 
@@ -20,6 +21,8 @@ public class DockerCleanMonitoringPart extends AbstractPipelinePart {
 	@Override
 	protected void execute() {
 		logger.info("Clean docker container.");
+
+		getBlackboard().setState(PipelineState.DOCKER_CLEAN);
 
 		DockerClient client = DefaultDockerClient.builder().uri(docker.getUrl()).build();
 

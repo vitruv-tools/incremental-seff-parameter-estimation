@@ -3,5 +3,44 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/classmate-1.3.4.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/hibernate-validator-6.0.13.Final.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/jackson-annotations-2.9.0.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/jackson-annotations-2.9.8.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/jackson-core-2.9.7.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/jackson-core-2.9.8.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/jackson-databind-2.9.7.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/jackson-databind-2.9.8.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/jackson-datatype-jdk8-2.9.7.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/jackson-datatype-jsr310-2.9.7.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/jackson-module-parameter-names-2.9.7.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/javax.annotation-api-1.3.2.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/jboss-logging-3.3.2.Final.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/jul-to-slf4j-1.7.25.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/log4j-api-2.11.1.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/log4j-to-slf4j-2.11.1.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/logback-classic-1.2.3.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/logback-core-1.2.3.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/snakeyaml-1.23.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/spring-aop-5.1.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/spring-beans-5.1.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/spring-boot-2.1.1.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/spring-boot-autoconfigure-2.1.1.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/spring-boot-starter-2.1.1.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/spring-boot-starter-json-2.1.1.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/spring-boot-starter-logging-2.1.1.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/spring-boot-starter-tomcat-2.1.1.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/spring-boot-starter-web-2.1.1.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/spring-context-5.1.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/spring-core-5.1.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/spring-expression-5.1.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/spring-jcl-5.1.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/spring-web-5.1.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/spring-webmvc-5.1.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/tomcat-embed-core-9.0.13.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/tomcat-embed-el-9.0.13.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/tomcat-embed-websocket-9.0.13.jar"/>
+	<classpathentry kind="lib" path="/tools.vitruv.applications.pcmjava.modelrefinement.parameters.interface/lib/validation-api-2.0.1.Final.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

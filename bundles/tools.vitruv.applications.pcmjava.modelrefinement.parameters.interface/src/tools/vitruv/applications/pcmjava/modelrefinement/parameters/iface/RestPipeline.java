@@ -15,6 +15,9 @@ public class RestPipeline extends ParameterEstimationPipeline implements IPipeli
 		this.rest.setPipeline(this);
 
 		this.blackboard.getListeners().add(this);
+
+		// set init state
+		blackboard.setState(PipelineState.INIT);
 	}
 
 	@Override

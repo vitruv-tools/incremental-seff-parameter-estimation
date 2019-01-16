@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.load.JMeterExecutor;
+import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.PipelineState;
 import tools.vitruv.applications.pcmjava.modelrefinement.parameters.pipeline.parts.AbstractPipelinePart;
 
 public class LoadTestingPart extends AbstractPipelinePart {
@@ -20,6 +21,8 @@ public class LoadTestingPart extends AbstractPipelinePart {
 	@Override
 	protected void execute() {
 		logger.info("Started load testing.");
+		getBlackboard().setState(PipelineState.LOAD_TESTING);
+
 		try {
 			this.executor.execute(new File(jmxPath));
 		} catch (IOException e) {
